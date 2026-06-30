@@ -18,10 +18,11 @@ const nodeEnv: Record<string, string | undefined> | undefined =
  *  (e.g. "/knowledge-base"). In the browser this is the Vite `base`
  *  (`import.meta.env.BASE_URL` = "/knowledge-base/"); the server uses the same
  *  fixed base path. */
-export const BASE_PATH = (viteEnv?.BASE_URL ?? "/knowledge-base/").replace(
-  /\/$/,
-  "",
-);
+export const BASE_PATH = (
+  viteEnv?.BASE_URL ??
+  nodeEnv?.VITE_BASE_PATH ??
+  "/"
+).replace(/\/$/, "");
 
 /** Supabase project URL and anon key. */
 export const SUPABASE_URL =
@@ -33,3 +34,11 @@ export const SUPABASE_ANON_KEY =
  *  current origin + BASE_PATH at runtime. */
 export const SITE_URL =
   viteEnv?.VITE_SITE_URL ?? nodeEnv?.NEXT_PUBLIC_SITE_URL ?? "";
+
+/** Optional OAuth providers to offer on the login UI (email/password +
+ *  magic-link always work). Enable them in the Supabase dashboard, then list
+ *  them in VITE_OAUTH_PROVIDERS, e.g. "github,google". */
+export const OAUTH_PROVIDERS = (viteEnv?.VITE_OAUTH_PROVIDERS ?? "")
+  .split(",")
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);

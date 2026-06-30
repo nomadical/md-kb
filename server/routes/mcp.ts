@@ -6,7 +6,7 @@ import { adminClient } from "../supabase";
 import { slugify } from "../../src/lib/markdown";
 import { MCP_API_TOKEN, SITE_URL } from "../env";
 
-// Remote MCP server for the SkyCell KB (port of the Next src/app/api/[transport]
+// Remote MCP server for the knowledge base (read-only article tools over MCP).
 // route, which used the Next-only `mcp-handler`). Lets a Claude.ai connector
 // search the KB and create *draft* articles (never published — a human reviews).
 // Streamable-HTTP endpoint at <site>/knowledge-base/api/mcp.
@@ -27,7 +27,7 @@ const normFolder = (folder: string): string =>
     .join("/");
 
 function buildServer(): McpServer {
-  const server = new McpServer({ name: "skycell-kb", version: "1.0.0" });
+  const server = new McpServer({ name: "md-kb", version: "1.0.0" });
 
   server.tool(
     "search_kb_articles",

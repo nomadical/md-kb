@@ -669,11 +669,9 @@ create table if not exists public.article_translations (
   unique (article_id, language)
 );
 
--- Allowed translation languages (every supported language except the source).
--- Update this list (and kb-core's LANGUAGES) when adding a language.
+-- Translation language codes are free-form (governed by the enabledLanguages
+-- setting + kb-core's LANGUAGES); no DB-level allowlist in the OSS edition.
 alter table public.article_translations drop constraint if exists article_translations_language_check;
-alter table public.article_translations add constraint article_translations_language_check
-  check (language in ('de'));
 
 create index if not exists article_translations_article_idx on public.article_translations (article_id);
 create index if not exists article_translations_lang_idx     on public.article_translations (language);

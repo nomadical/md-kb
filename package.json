@@ -15,6 +15,7 @@
     "start": "tsx --env-file-if-exists=.env.local server/index.ts",
     "server:dev": "tsx watch --env-file-if-exists=.env.local server/index.ts",
     "db:migrate": "psql \"${DATABASE_URL:-postgresql://postgres:postgres@127.0.0.1:54322/postgres}\" -v ON_ERROR_STOP=1 -f supabase/migrations.sql -c \"notify pgrst, 'reload schema';\"",
+    "db:seed": "psql \"${DATABASE_URL:-postgresql://postgres:postgres@127.0.0.1:54322/postgres}\" -v ON_ERROR_STOP=1 -f supabase/seed.sql",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "i18n:pull": "node --env-file-if-exists=.env.local scripts/i18n-pull.mjs",

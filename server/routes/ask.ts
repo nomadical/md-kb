@@ -84,7 +84,7 @@ r.post("/ask", async (req, res) => {
       {
         role: "system",
         content:
-          "You are the SkyCell knowledge base assistant. Answer the question using ONLY the provided context. " +
+          "You are a knowledge base assistant. Answer the question using ONLY the provided context. " +
           "Be concise and clear; do not add citations or source numbers. " +
           'If the context does not contain the answer, reply with exactly "NO_ANSWER" and nothing else.',
       },

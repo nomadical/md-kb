@@ -1,39 +1,47 @@
 # OSS extraction checklist
 
-Tracking the genericization of the SkyCell knowledge base into a plug-and-play
-open-source app. Decisions: standalone public repo · email/password + magic-link
-auth (OAuth optional).
+Genericizing the SkyCell knowledge base into a plug-and-play open-source app.
+Decisions: standalone public repo · email/password + magic-link auth (OAuth
+optional).
 
-## Milestone 1 — clean scaffold (done)
-- [x] Clean copy (no `.git` history, `.env.local`, `node_modules`, build artifacts).
-- [x] Remove SkyCell deploy infra (`deploy/`, deploy/release workflows); keep lint CI.
-- [x] MIT `LICENSE`, generic `README.md`, generic `.env.example`.
-- [x] Fresh git history.
+## Milestone 1 — clean scaffold ✅
+- [x] Clean copy (no `.git` history, secrets, `node_modules`, build artifacts).
+- [x] Remove SkyCell deploy infra; keep generic lint CI.
+- [x] MIT `LICENSE`, generic `README.md`, generic `.env.example`, fresh git.
 
-## Milestone 2 — auth (Keycloak/Azure → Supabase email + magic-link)
-- [ ] Make email/password + magic-link the default login (it already exists as a
-      dev fallback — promote it); render OAuth buttons only for
-      `VITE_OAUTH_PROVIDERS`.
-- [ ] Drop `src/lib/keycloak.ts`, `server/routes/authSync.ts`,
-      `packages/kb-react/src/keycloakRoles.ts`; simplify `AuthProvider`,
-      `signOut`, `AuthCallbackPage` (no Keycloak RP-logout / group sync).
-- [ ] Editorial role still comes from `profiles.role`; access-role tags become
-      purely admin-managed (drop IdP sync + the `BASIC_ACCESS` special-case).
+## Milestone 2 — auth ✅
+- [x] Default login = email/password + magic-link via a shared `AuthPanel`
+      (used by `/login` and the sign-in modal). OAuth buttons only when
+      `VITE_OAUTH_PROVIDERS` is set.
+- [x] Deleted `src/lib/keycloak.ts`, `server/routes/authSync.ts` (+ unmounted);
+      `AuthCallback` no longer posts a provider token; `signOut` no longer does
+      Keycloak RP-logout.
+- [x] Editorial role still from `profiles.role`; access-role tags admin-managed.
 
-## Milestone 3 — config / branding / i18n
-- [ ] `BASE_PATH` from `VITE_BASE_PATH` (default `/`) across vite config, router,
-      server mount, config.ts.
-- [ ] Neutral default branding (already Settings-driven); strip SkyCell footer
-      links + logo + the `skymind.com` domains in `inference.ts` / `ask.ts` /
-      scripts.
-- [ ] Drop the hardcoded `de` DB language constraint; ship `en` only, languages
-      driven by the `enabledLanguages` setting.
+## Milestone 3 — config / branding / i18n ✅
+- [x] `VITE_BASE_PATH` (default `/`) across vite config, server env, config.ts.
+- [x] Neutral branding: footer/login/title use the configurable site name;
+      dropped SkyCell footer links; neutralized hero/footer/AI-prompt copy.
+- [x] Dropped the hardcoded `de` translation-language DB constraint.
+- [x] Generic access-role list (`BASIC_ACCESS`, `INTERNAL`, `STAFF`).
 
-## Milestone 4 — content / data
-- [ ] `npm run db:seed` → a few generic demo articles (replace SkyCell
-      `import-kb`/`seed-translations` scripts).
-- [ ] Confirm no proprietary strings/domains remain (`grep -riE 'skycell|skymind'`).
+## Milestone 4 — content / data ✅
+- [x] `npm run db:seed` → `supabase/seed.sql` (generic welcome/cheatsheet demo).
+- [x] Removed SkyCell import/seed scripts; neutralized MCP server name.
+- [x] No `skycell`/`skymind` strings remain in `src/`, `server/`, `scripts/`
+      (verified) — except the package scope below.
 
-## Milestone 5 — improvements (folded in per request)
-- OSS hardening: tests, docs, config robustness, one-command setup.
-- UX polish, new features, code quality/perf — scoped as separate PRs.
+**Verified:** typecheck ✅ · lint ✅ · tests 15/15 ✅ · prod build (Vite 8) ✅.
+**Plug-and-play:** clone → `.env.local` → `db:migrate` + `db:seed` → run. First
+sign-up becomes admin; configure the rest in Admin → Settings.
+
+## Deferred (polish, not blockers)
+- [ ] Rename the npm scope `@skycell-ag/{kb-core,kb-react}` → e.g. `@md-kb/*`
+      (package names + ~15 import sites + tsup/workspaces). Functional as-is.
+- [ ] `supabase/config.toml` still carries a commented Keycloak (`skymind`)
+      external-auth template + `supabase/AUTH-kb-embed.md` (a SkyCell auth note).
+- [ ] kb-core/kb-react brand tokens (`KB_BRANDS.skycell`) — keep as the default
+      palette or rename.
+
+## Milestone 5 — improvements (per request: OSS hardening + UX + features + code quality)
+- Scoped as follow-up PRs once the repo is published.

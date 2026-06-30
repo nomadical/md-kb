@@ -1,16 +1,12 @@
 import { useTranslation } from "react-i18next";
 import Link from "@/components/ui/AppLink";
 import { useSettings } from "@/spa/data/settings";
-import {
-  FaCube,
-  FaLinkedin,
-  FaArrowUpRightFromSquare,
-} from "react-icons/fa6";
+import { FaCube } from "react-icons/fa6";
 
-/** Site footer with SkyCell branding + quick links. */
+/** Site footer with quick links (branding from admin settings). */
 export default function Footer() {
   const { t } = useTranslation();
-  const { askAiEnabled } = useSettings();
+  const { askAiEnabled, siteName } = useSettings();
   const year = new Date().getFullYear();
 
   return (
@@ -21,10 +17,7 @@ export default function Footer() {
           <div className="max-w-sm">
             <div className="flex items-center gap-2 text-[15px] font-semibold tracking-tight">
               <FaCube className="text-ink-accent" />
-              SkyCell{" "}
-              <span className="font-normal text-ink-mut">
-                {t("nav.knowledgeBase")}
-              </span>
+              {siteName}
             </div>
             <p className="mt-2 text-[13px] leading-relaxed text-ink-mut">
               {t("footer.tagline")}
@@ -61,33 +54,6 @@ export default function Footer() {
                     </Link>
                   </li>
                 )}
-              </ul>
-            </nav>
-            <nav>
-              <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wide text-ink-mut">
-                SkyCell
-              </p>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="https://www.skycell.ch"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-ink-mut hover:text-ink-accent"
-                  >
-                    {t("nav.website")} <FaArrowUpRightFromSquare className="text-[9px]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/skycell-ag"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-ink-mut hover:text-ink-accent"
-                  >
-                    <FaLinkedin /> LinkedIn
-                  </a>
-                </li>
               </ul>
             </nav>
           </div>

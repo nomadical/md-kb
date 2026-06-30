@@ -51,8 +51,8 @@
   },
   "home": {
     "heroTitle": "Wie können wir helfen?",
-    "heroSubtitle_one": "Anleitungen, FAQs und How-tos für SkyMind — {{count}} Artikel für dich verfügbar.",
-    "heroSubtitle_other": "Anleitungen, FAQs und How-tos für SkyMind — {{count}} Artikel für dich verfügbar.",
+    "heroSubtitle_one": "Anleitungen, FAQs und How-tos — {{count}} Artikel für dich verfügbar.",
+    "heroSubtitle_other": "Anleitungen, FAQs und How-tos — {{count}} Artikel für dich verfügbar.",
     "searchPlaceholder": "Wissensdatenbank durchsuchen…",
     "modeLabel": "Suchmodus",
     "searchTab": "Suchen",
@@ -91,14 +91,23 @@
     "groundedNote": "Beantwortet nur aus Artikeln, auf die du Zugriff hast."
   },
   "footer": {
-    "tagline": "Anleitungen, FAQs und How-tos für die SkyCell-Pharma-Kühlkettenplattform.",
-    "rights": "© {{year}} SkyCell AG. Alle Rechte vorbehalten."
+    "tagline": "Anleitungen, FAQs und How-tos.",
+    "rights": "© {{year}}"
   },
   "auth": {
     "signInSubtitle": "Melde dich an, um die Wissensdatenbank zu verwalten.",
-    "redirecting": "Weiterleiten…",
-    "withKeycloak": "Mit SkyMind (Keycloak) anmelden",
-    "withMicrosoft": "Mit Microsoft anmelden"
+    "signIn": "Anmelden",
+    "signUp": "Konto erstellen",
+    "emailPlaceholder": "du@beispiel.com",
+    "passwordPlaceholder": "Passwort",
+    "needAccount": "Kein Konto? Registrieren",
+    "haveAccount": "Konto vorhanden? Anmelden",
+    "emailMagicLink": "Magischen Link per E-Mail senden",
+    "magicLinkSent": "Magischer Link an {{email}} gesendet.",
+    "confirmEmail": "Bestätige dein Konto über die E-Mail.",
+    "enterEmail": "Gib zuerst deine E-Mail-Adresse ein.",
+    "or": "oder",
+    "continueWith": "Weiter mit {{provider}}"
   },
   "theme": {
     "light": "Hell",

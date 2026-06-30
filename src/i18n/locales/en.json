@@ -51,8 +51,8 @@
   },
   "home": {
     "heroTitle": "How can we help?",
-    "heroSubtitle_one": "Guides, FAQs and how-tos for SkyMind — {{count}} article available to you.",
-    "heroSubtitle_other": "Guides, FAQs and how-tos for SkyMind — {{count}} articles available to you.",
+    "heroSubtitle_one": "Guides, FAQs and how-tos — {{count}} article available to you.",
+    "heroSubtitle_other": "Guides, FAQs and how-tos — {{count}} articles available to you.",
     "searchPlaceholder": "Search the knowledge base…",
     "modeLabel": "Search mode",
     "searchTab": "Search",
@@ -91,14 +91,23 @@
     "groundedNote": "Answered only from articles you have access to."
   },
   "footer": {
-    "tagline": "Guides, FAQs and how-tos for the SkyCell pharma cold-chain platform.",
-    "rights": "© {{year}} SkyCell AG. All rights reserved."
+    "tagline": "Guides, FAQs and how-tos.",
+    "rights": "© {{year}}"
   },
   "auth": {
     "signInSubtitle": "Sign in to manage the knowledge base.",
-    "redirecting": "Redirecting…",
-    "withKeycloak": "Sign in with SkyMind (Keycloak)",
-    "withMicrosoft": "Sign in with Microsoft"
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "Password",
+    "needAccount": "Need an account? Sign up",
+    "haveAccount": "Have an account? Sign in",
+    "emailMagicLink": "Email me a magic link",
+    "magicLinkSent": "Magic link sent to {{email}}.",
+    "confirmEmail": "Check your email to confirm your account.",
+    "enterEmail": "Enter your email first.",
+    "or": "or",
+    "continueWith": "Continue with {{provider}}"
   },
   "theme": {
     "light": "Light",

@@ -43,29 +43,13 @@ export const can = {
   audit: (role: Role | null) => role === "admin",
 };
 
-/** Entitlement roles in the SkyCell `secure` realm (mirrors the Intervention
- *  client's `userRoles`). Used to populate the article access-role picker.
- *  BASIC_ACCESS is handled as "public", so it's offered via the picker too. */
+/** Access-role tags that gate article visibility, offered by the article
+ *  access-role picker. BASIC_ACCESS is treated as "public". Customize this list
+ *  for your deployment (an empty access_roles set also means public). */
 export const ENTITLEMENT_ROLES = [
   "BASIC_ACCESS",
-  "ASSET_MANAGEMENT",
-  "ASSET_LEASE_MANAGEMENT",
-  "ASSET_PAIRING",
-  "SHIPMENT_MANAGEMENT",
-  "SHIPMENT_OPERATIONS",
-  "TEMPERATURE_CHECK",
-  "INTELLIGENT_MONITORING",
-  "LOGGER_MANAGEMENT",
-  "SITE_MANAGEMENT_INTERVENTION",
-  "CUSTOMER_ADMIN_INTERVENTION",
-  "ADMIN_INTERVENTION",
-  "SKYMIND_ADMIN",
-  "BOOKING_MANAGEMENT",
-  "BOOKING_PRICING_PREVIEW",
-  "PRODUCT_RELEASE",
-  "LANE_MANAGEMENT",
-  "LANE_RISK",
-  "INSIGHTS",
+  "INTERNAL",
+  "STAFF",
 ] as const;
 
 export type Profile = {

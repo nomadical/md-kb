@@ -1,13 +1,13 @@
 // Provider-agnostic inference for "Ask the KB". Targets any OpenAI-compatible
 // endpoint — Azure AI Foundry (`/openai/v1`), Ollama (`/v1`), vLLM, LocalAI, or
-// an internal SkyCell gateway. Configure via env:
+// an OpenAI-compatible gateway. Configure via env:
 //
 //   EMBEDDINGS_URL   e.g. https://<resource>.openai.azure.com/openai/v1
 //   EMBEDDINGS_MODEL e.g. text-embedding-3-large   (must yield 768 dims)
 //   EMBEDDINGS_DIMENSIONS  e.g. 768  -> sent as `dimensions` (text-embedding-3-*
 //                          supports Matryoshka truncation, keeping vector(768))
 //
-// Chat (LLM) — either the SkyCell Azure AI Foundry hub:
+// Chat (LLM) — either an Azure OpenAI deployment:
 //   KB_AZURE_OPENAI=true
 //   KB_AZURE_OPENAI_ENDPOINT=https://<resource>.openai.azure.com/openai/v1
 //   KB_AZURE_OPENAI_KEY=...        (sent as the `api-key` header)
@@ -34,7 +34,7 @@ const DEV_EMBEDDINGS =
   process.env.KB_DEV_EMBEDDINGS === "true" &&
   process.env.NODE_ENV !== "production";
 
-// Chat (LLM) target. The SkyCell Azure AI Foundry hub uses its own env scheme:
+// Chat (LLM) target. Azure OpenAI uses its own env scheme:
 //   KB_AZURE_OPENAI=true              -> route chat to Foundry
 //   KB_AZURE_OPENAI_ENDPOINT=.../openai/v1
 //   KB_AZURE_OPENAI_KEY=...           (sent as the `api-key` header)

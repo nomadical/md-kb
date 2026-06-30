@@ -4,14 +4,9 @@ import { useSearchParams } from "@/components/ui/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 /**
- * SPA OAuth callback (replaces the Next /auth/callback route). Exchanges the
- * PKCE code for a session client-side, then navigates to `next`.
- *
- * After the exchange, the Keycloak provider token is POSTed to the backend
- * (/api/auth/sync-roles) so the privileged editorial-role elevation runs
- * server-side with the service role (best-effort; failure doesn't block login).
+ * OAuth / magic-link callback: exchange the PKCE code for a session client-side,
+ * then navigate to `next`.
  */
-const API = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/api`;
 export default function AuthCallbackPage() {
   const params = useSearchParams();
   const navigate = useNavigate();
@@ -31,22 +26,10 @@ export default function AuthCallbackPage() {
     const supabase = createClient();
     (async () => {
       if (code) {
-        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (error) {
           setError(error.message);
           return;
-        }
-        // Sync Keycloak entitlements + editorial role server-side (best-effort).
-        const session = data.session;
-        if (session?.provider_token && session.access_token) {
-          await fetch(`${API}/auth/sync-roles`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${session.access_token}`,
-            },
-            body: JSON.stringify({ providerToken: session.provider_token }),
-          }).catch(() => {});
         }
       }
       navigate(next, { replace: true });

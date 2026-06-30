@@ -25,11 +25,11 @@ export default function ArticlePage() {
     language,
   );
   const { articles } = useOutletContext<PublicOutletContext>();
-  const { tagsEnabled, feedbackWidget, fallbackToSource } = useSettings();
+  const { tagsEnabled, feedbackWidget, fallbackToSource, siteName } = useSettings();
 
   useEffect(() => {
-    if (article) document.title = `${article.title} · SkyCell KB`;
-  }, [article]);
+    if (article) document.title = `${article.title} · ${siteName}`;
+  }, [article, siteName]);
 
   if (loading) return <Loading />;
   if (!article) return <NotFound message="Article not found" />;

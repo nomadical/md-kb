@@ -8,7 +8,7 @@
 
    Canonical brand values live in packages/kb-core/src/tokens.ts (KB_BRANDS /
    KB_NEUTRALS), shared with @skycell-ag/kb-react's createKbTheme(). The accent
-   below is SkyCell blue (KB_BRANDS.skycell); keep the two in sync. */
+   below is the default brand blue; keep the two in sync. */
 :root {
   --ink-bg: #f4f6f9;
   --ink-panel: #ffffff;
