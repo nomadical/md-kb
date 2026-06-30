@@ -124,6 +124,9 @@
     "next": "Weiter",
     "notTranslated": "Noch nicht auf {{language}} verfügbar – Englisch wird angezeigt.",
     "notAvailable": "Noch nicht auf {{language}} verfügbar.",
+    "copyMarkdown": "Markdown kopieren",
+    "copied": "Kopiert",
+    "download": "Herunterladen",
     "feedback": {
       "question": "War das hilfreich?",
       "yes": "Ja",

@@ -1,5 +1,8 @@
 # md-kb — a self-hostable markdown knowledge base
 
+[![CI](https://github.com/nomadical/md-kb/actions/workflows/ci.yml/badge.svg)](https://github.com/nomadical/md-kb/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 An open-source, plug-and-play knowledge base built on **Supabase + Vite/React +
 a thin Express API**. Public visitors read published articles; signed-in staff
 write them in an Obsidian-style split editor with live preview.

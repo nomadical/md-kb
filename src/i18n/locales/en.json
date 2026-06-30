@@ -124,6 +124,9 @@
     "next": "Next",
     "notTranslated": "Not available in {{language}} yet — showing English.",
     "notAvailable": "Not available in {{language}} yet.",
+    "copyMarkdown": "Copy markdown",
+    "copied": "Copied",
+    "download": "Download",
     "feedback": {
       "question": "Was this helpful?",
       "yes": "Yes",
