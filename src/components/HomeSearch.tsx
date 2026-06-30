@@ -6,6 +6,7 @@ import { FaMagnifyingGlass, FaWandMagicSparkles } from "react-icons/fa6";
 import { createClient } from "@/lib/supabase/client";
 import { normalizeLanguage, type ArticleMeta } from "@/lib/types";
 import AccessBadges from "@/components/AccessBadges";
+import Highlight from "@/components/Highlight";
 import AskResult, { type AskResult as AskResultData } from "@/components/AskResult";
 import { useSearchParams } from "@/components/ui/navigation";
 import { BASE_PATH as BP } from "@/lib/config";
@@ -174,9 +175,13 @@ export default function HomeSearch({
             }}
             className="block rounded-xl border border-ink-line bg-ink-panel p-4 transition-all hover:-translate-y-0.5 hover:border-ink-accent hover:shadow-sm"
           >
-            <div className="font-medium">{a.title}</div>
+            <div className="font-medium">
+              <Highlight text={a.title} query={needle} />
+            </div>
             {a.folder && (
-              <div className="mt-1 text-[12px] text-ink-mut">{a.folder}</div>
+              <div className="mt-1 text-[12px] text-ink-mut">
+                <Highlight text={a.folder} query={needle} />
+              </div>
             )}
             <div className="mt-2">
               <AccessBadges roles={a.access_roles} />
