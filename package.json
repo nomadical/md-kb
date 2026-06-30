@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build:packages": "npm run build -w @skycell-ag/kb-core",
+    "build:packages": "npm run build -w @md-kb/core",
     "predev": "npm run build:packages",
     "dev": "vite",
     "prebuild": "npm run build:packages",
@@ -22,12 +22,11 @@
     "i18n:push": "node --env-file-if-exists=.env.local scripts/i18n-push.mjs",
     "test": "vitest run",
     "pretypecheck": "npm run build:packages",
-    "typecheck": "tsc --noEmit",
-    "build:kb-react": "npm run build:packages && npm run build -w @skycell-ag/kb-react"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0",
-    "@skycell-ag/kb-core": "*",
+    "@md-kb/core": "*",
     "@supabase/ssr": "0.10.3",
     "@supabase/supabase-js": "2.107.0",
     "@uiw/react-markdown-preview": "5.2.1",

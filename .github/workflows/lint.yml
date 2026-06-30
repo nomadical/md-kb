@@ -21,7 +21,7 @@ jobs:
       - name: oxlint
         run: npx oxlint --format=github
       - name: typecheck
-        # Build the workspace packages first so tsc can resolve @skycell-ag/kb-core
+        # Build the workspace packages first so tsc can resolve @md-kb/core
         # (its types come from packages/kb-core/dist). Without this, tsc reports
-        # "Cannot find module '@skycell-ag/kb-core'".
+        # "Cannot find module '@md-kb/core'".
         run: npm run build:packages && npx tsc --noEmit

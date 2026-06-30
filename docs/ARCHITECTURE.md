@@ -13,7 +13,7 @@ compliance-sensitive (pharma cold-chain) content. It ships in two forms:
 1. **Standalone app** — a Next.js site (`/knowledge-base`) with reading,
    full-text + fuzzy search, "Ask the KB", and an editorial workspace
    (drafts, mandatory review, version history, trash, audit, templates).
-2. **Embeddable widget** — `@skycell-ag/kb-react`, a read-only React component
+2. **Embeddable widget** — `@md-kb/react`, a read-only React component
    other SkyMind apps drop in (e.g. the Intervention client's ⌘K launcher). The
    host talks to the KB's Supabase directly; RLS is the boundary.
 
@@ -26,8 +26,8 @@ are recognisably one product via shared design tokens.
 | --- | --- |
 | **`knowledge-base-app`** (this repo) | npm-workspaces monorepo: the Next.js app + the packages below + the self-hosted Supabase stack (`deploy/supabase/`) |
 | `packages/kb-core` | Framework-agnostic shared model (article types, `ARTICLE_LIST_COLUMNS`, `isPublicArticle`, brand design tokens). **Private** — bundled into kb-react, transpiled into the app. Single source of truth. |
-| `packages/kb-react` → **`@skycell-ag/kb-react`** | The embeddable widget (MUI). Published to GitHub Packages. Bundles kb-core (ships self-contained types). |
-| **`intervention-client`** (separate repo) | A host: mounts the ⌘K launcher + `/knowledge` page via `@skycell-ag/kb-react`. |
+| `packages/kb-react` → **`@md-kb/react`** | The embeddable widget (MUI). Published to GitHub Packages. Bundles kb-core (ships self-contained types). |
+| **`intervention-client`** (separate repo) | A host: mounts the ⌘K launcher + `/knowledge` page via `@md-kb/react`. |
 | **`fe-node-services`** (separate repo) | Hosts the deploy workflows + the Azure self-hosted runner + shared Traefik. |
 
 ## Component diagram
@@ -36,7 +36,7 @@ are recognisably one product via shared design tokens.
 flowchart TB
   subgraph Browser
     APP["KB app (Next.js)"]
-    HOST["Host app e.g. Intervention<br/>(@skycell-ag/kb-react ⌘K)"]
+    HOST["Host app e.g. Intervention<br/>(@md-kb/react ⌘K)"]
   end
   subgraph Traefik["Traefik (node-services.&lt;env&gt;.skymind.com)"]
     KONG["Supabase Kong gateway<br/>(supabase.&lt;env&gt;.skymind.com)"]
@@ -114,7 +114,7 @@ constrained in code to `status='draft'`. See
 
 ## Host integration (the widget)
 
-- `@skycell-ag/kb-react` exports `KbProvider` + `KnowledgeBase`, a global
+- `@md-kb/react` exports `KbProvider` + `KnowledgeBase`, a global
   **`KbLauncher`** (⌘K modal), **`KbRelated`** (contextual related-articles by
   stable `context_keys`, not URLs), and `createKbTheme` (on-brand MUI theme from
   kb-core tokens; hosts with their own theme keep it — e.g. Validaide teal).
@@ -133,7 +133,7 @@ dropped to shrink the public surface). Single public entrypoint is Kong at
 | `deploy-supabase` (fe-node-services) | Stand up / update the Supabase stack; feeds `EMBED_ORIGINS` from a repo Variable |
 | `build-knowledge-base` (fe-node-services) | Build + deploy the Next.js image (NEXT_PUBLIC_* baked in) |
 | `db-migrate` (fe-node-services) | Apply idempotent `supabase/migrations.sql` to the live DB (as `supabase_admin`) |
-| `release-kb-react` (this repo) | Publish `@skycell-ag/kb-react` to GitHub Packages |
+| `release-kb-react` (this repo) | Publish `@md-kb/react` to GitHub Packages |
 
 Schema-as-code: `supabase/schema.sql` (first-boot) + idempotent
 `supabase/migrations.sql` (applied to running DBs). See

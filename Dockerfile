@@ -17,7 +17,6 @@ WORKDIR /app
 # the hoisted root) are present when `npm run build` builds the package.
 COPY package.json package-lock.json ./
 COPY packages/kb-core/package.json ./packages/kb-core/
-COPY packages/kb-react/package.json ./packages/kb-react/
 RUN npm ci --ignore-scripts
 COPY . .
 ARG VITE_SUPABASE_URL
@@ -33,13 +32,13 @@ ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
     VITE_SITE_URL=$VITE_SITE_URL \
     VITE_KEYCLOAK_LOGOUT_URL=$VITE_KEYCLOAK_LOGOUT_URL \
     VITE_KEYCLOAK_CLIENT_ID=$VITE_KEYCLOAK_CLIENT_ID
-# prebuild hook builds @skycell-ag/kb-core (tsup), then `vite build` emits ./dist.
+# prebuild hook builds @md-kb/core (tsup), then `vite build` emits ./dist.
 RUN npm run build
 
 FROM node:22-alpine AS run
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000
-# Runtime needs: node_modules (express + tsx + the @skycell-ag/kb-core symlink),
+# Runtime needs: node_modules (express + tsx + the @md-kb/core symlink),
 # the kb-core build it points at, the built SPA (dist), and the server + the
 # src/lib modules (and tsconfig path aliases) the server imports at runtime.
 COPY --from=build /app/node_modules ./node_modules

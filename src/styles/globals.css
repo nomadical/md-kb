@@ -7,7 +7,7 @@
    `theme("colors.ink.*")` call below switches automatically.
 
    Canonical brand values live in packages/kb-core/src/tokens.ts (KB_BRANDS /
-   KB_NEUTRALS), shared with @skycell-ag/kb-react's createKbTheme(). The accent
+   KB_NEUTRALS), shared with @md-kb/react's createKbTheme(). The accent
    below is the default brand blue; keep the two in sync. */
 :root {
   --ink-bg: #f4f6f9;

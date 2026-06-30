@@ -12,7 +12,7 @@ ecosystem. Today a user's Keycloak session is converted into a *separate*
 Supabase (GoTrue) session, and entitlements are mirrored into a `profiles` row:
 
 - **GoTrue OAuth bridge.** The KB app logs in via GoTrue's Keycloak provider
-  (cookie session, `@supabase/ssr`). The embed (`@skycell-ag/kb-react`) can't do
+  (cookie session, `@supabase/ssr`). The embed (`@md-kb/react`) can't do
   a top-level redirect, so it runs the OAuth grant in a hidden iframe/popup that
   lands on the host's `/kb-auth` page and `postMessage`s the code back
   (`kb-react/src/auth.ts`, `completeKbAuthRedirect`).
@@ -81,7 +81,7 @@ PostgREST then trusts that bearer if it's signed by Keycloak.
   rows (editorial pin + `manual_access_roles`), created lazily on first admin
   grant — pure read needs no profile row at all.
 
-### Embed — `@skycell-ag/kb-react`  (the big win)
+### Embed — `@md-kb/react`  (the big win)
 - `createKbClient`: `createClient(url, anon, { accessToken: () => getKeycloakToken() })`.
 - **Delete** `src/auth.ts` (the iframe/popup grant), `ensureSupabaseSession`,
   `completeKbAuthRedirect`, `getAuthUrl`, the `sync_my_access_roles` RPC call,

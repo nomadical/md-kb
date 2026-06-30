@@ -1,6 +1,6 @@
-// @skycell-ag/kb-core — framework-agnostic, dependency-free shared model for the
+// @md-kb/core — framework-agnostic, dependency-free shared model for the
 // SkyCell Knowledge Base. Single source of truth for the read-only article shape
-// used by both the Next app and @skycell-ag/kb-react (which bundles this in, so
+// used by both the Next app and @md-kb/react (which bundles this in, so
 // it ships no extra runtime dependency). No React, no MUI, no Supabase here.
 
 /** Lightweight article shape for list/search views (omits the heavy `content`). */

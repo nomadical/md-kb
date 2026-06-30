@@ -2,7 +2,7 @@
 
 ## What changed
 
-The read-only KB embed (`@skycell-ag/kb-react`) used to mint its Supabase session
+The read-only KB embed (`@md-kb/react`) used to mint its Supabase session
 by running the Keycloak OAuth grant inside a **hidden iframe** (popup fallback) —
 the source of the CORS / frame-ancestors / "widget configuration" errors.
 

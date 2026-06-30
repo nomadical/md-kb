@@ -35,13 +35,15 @@ optional).
 **Plug-and-play:** clone → `.env.local` → `db:migrate` + `db:seed` → run. First
 sign-up becomes admin; configure the rest in Admin → Settings.
 
+## Milestone 6 — scope rename ✅
+- [x] `@skycell-ag/kb-core` → `@md-kb/core` (package, imports, build scripts).
+- [x] Removed the `kb-react` embed package (unused by the app; pulled a private
+      `@skycell-ag/scd-lib`) and its Dockerfile/CI references.
+
 ## Deferred (polish, not blockers)
-- [ ] Rename the npm scope `@skycell-ag/{kb-core,kb-react}` → e.g. `@md-kb/*`
-      (package names + ~15 import sites + tsup/workspaces). Functional as-is.
-- [ ] `supabase/config.toml` still carries a commented Keycloak (`skymind`)
-      external-auth template + `supabase/AUTH-kb-embed.md` (a SkyCell auth note).
-- [ ] kb-core/kb-react brand tokens (`KB_BRANDS.skycell`) — keep as the default
-      palette or rename.
+- [ ] `supabase/config.toml` still carries a commented Keycloak external-auth
+      template + `supabase/AUTH-kb-embed.md` (a SkyCell auth note); the
+      `KB_BRANDS.skycell` palette in kb-core is the default brand blue.
 
 ## Milestone 5 — improvements (per request: OSS hardening + UX + features + code quality)
 - Scoped as follow-up PRs once the repo is published.

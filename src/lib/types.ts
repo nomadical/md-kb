@@ -1,5 +1,5 @@
-// Shared, framework-agnostic article model lives in @skycell-ag/kb-core (single
-// source of truth, also bundled into @skycell-ag/kb-react). The full editorial
+// Shared, framework-agnostic article model lives in @md-kb/core (single
+// source of truth, also bundled into @md-kb/react). The full editorial
 // `Article` (status/trash/audit fields) stays here. Import-and-re-export so the
 // names are also bound locally (used by canWriteArticle below).
 import {
@@ -13,7 +13,7 @@ import {
   languageLabel,
   type ArticleMeta,
   type Language,
-} from "@skycell-ag/kb-core";
+} from "@md-kb/core";
 
 export {
   ARTICLE_LIST_COLUMNS,
@@ -175,7 +175,7 @@ export type AuditEntry = {
 };
 
 // `ArticleMeta`, `ARTICLE_LIST_COLUMNS`, and `isPublicArticle` now come from
-// @skycell-ag/kb-core (re-exported at the top of this file).
+// @md-kb/core (re-exported at the top of this file).
 
 /** UI mirror of the DB `can_write_article`: admins/reviewers may edit anything;
  *  an editor may edit an article only if it's public or they hold ALL of its

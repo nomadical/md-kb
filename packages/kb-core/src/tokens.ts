@@ -1,6 +1,6 @@
 // Canonical SkyCell KB design tokens — the single source of truth for brand
 // colour, radius, and type, shared by the Next app (its Tailwind `@theme` in
-// src/app/globals.css mirrors these values) and by @skycell-ag/kb-react's
+// src/app/globals.css mirrors these values) and by @md-kb/react's
 // createKbTheme(). Plain values, no framework imports.
 
 /**
