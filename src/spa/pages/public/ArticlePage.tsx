@@ -7,6 +7,7 @@ import { languageLabel, normalizeLanguage } from "@/lib/types";
 import { slugify, stripLeadingH1 } from "@/lib/markdown";
 import MarkdownView from "@/components/MarkdownView";
 import AccessBadges from "@/components/AccessBadges";
+import ArticleActions from "@/components/ArticleActions";
 import ArticleToc from "@/components/ArticleToc";
 import ArticleEngagement from "@/components/ArticleEngagement";
 import { useArticle } from "@/spa/data/articles";
@@ -61,7 +62,7 @@ export default function ArticlePage() {
       <article className="min-w-0">
         <nav className="mb-4 flex items-center gap-1.5 text-[13px] text-ink-mut">
           <Link href="/" className="hover:text-ink-accent">
-            Knowledge Base
+            {siteName}
           </Link>
           {article.folder && (
             <>
@@ -82,22 +83,25 @@ export default function ArticlePage() {
           <h1 className="text-3xl font-semibold tracking-tight">
             {article.title}
           </h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-[12px] text-ink-mut">
-            <span>
-              Updated {new Date(article.updated_at).toLocaleDateString()}
-            </span>
-            {!article.published && (
-              <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700">
-                draft
+          <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2 text-[12px] text-ink-mut">
+              <span>
+                Updated {new Date(article.updated_at).toLocaleDateString()}
               </span>
-            )}
-            {tagsEnabled &&
-              article.tags.map((t) => (
-                <span key={t} className="rounded bg-black/5 px-1.5 py-0.5">
-                  #{t}
+              {!article.published && (
+                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700">
+                  draft
                 </span>
-              ))}
-            <AccessBadges roles={article.access_roles} />
+              )}
+              {tagsEnabled &&
+                article.tags.map((t) => (
+                  <span key={t} className="rounded bg-black/5 px-1.5 py-0.5">
+                    #{t}
+                  </span>
+                ))}
+              <AccessBadges roles={article.access_roles} />
+            </div>
+            <ArticleActions slug={article.slug} content={article.content} />
           </div>
           {usedFallback && (
             <p className="mt-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-[12px] text-amber-700">
