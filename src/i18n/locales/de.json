@@ -287,7 +287,7 @@
       "joined": "beigetreten {{date}}",
       "cantChangeOwnRole": "Du kannst deine eigene Rolle nicht ändern",
       "fromSso": "von SSO: {{roles}}",
-      "footnote": "Gewährte Berechtigungen werden von dir festgelegt und bleiben über Anmeldungen hinweg bestehen; „von SSO“-Rollen kommen automatisch von Keycloak."
+      "footnote": "Gewährte Berechtigungen werden von dir festgelegt und bleiben über Anmeldungen hinweg bestehen; „von SSO“-Rollen kommen automatisch von deinem Identity Provider."
     },
     "analytics": {
       "subtitle": "Anonyme Nutzung der gesamten Wissensdatenbank.",

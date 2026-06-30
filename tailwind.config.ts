@@ -13,7 +13,7 @@ export default {
           line: "var(--ink-line)", // borders
           mut: "var(--ink-mut)", // secondary text
           fg: "var(--ink-fg)", // primary text
-          accent: "var(--ink-accent)", // SkyCell sky blue
+          accent: "var(--ink-accent)", // brand accent (admin-configurable)
           accentHover: "var(--ink-accentHover)", // accent hover
         },
       },

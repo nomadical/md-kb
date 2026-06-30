@@ -334,25 +334,24 @@ skip_nonce_check = false
 # If enabled, it will allow the user to successfully authenticate when the provider does not return an email address.
 email_optional = false
 
-# Microsoft Entra ID (Azure AD). Provide credentials via environment variables
-# (see .env.local.example). For a single-tenant app set the `url` to your
-# tenant, e.g. https://login.microsoftonline.com/<TENANT_ID>/v2.0
+# Microsoft Entra ID (Azure AD). Optional — off by default. To use it, flip
+# `enabled` to true, supply credentials via environment variables (see
+# .env.example), and add "azure" to VITE_OAUTH_PROVIDERS. For a single-tenant
+# app set `url` to your tenant, e.g. https://login.microsoftonline.com/<TENANT_ID>/v2.0
 [auth.external.azure]
-enabled = true
+enabled = false
 client_id = "env(SUPABASE_AUTH_EXTERNAL_AZURE_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_EXTERNAL_AZURE_SECRET)"
 url = "env(SUPABASE_AUTH_EXTERNAL_AZURE_URL)"
 
-# Keycloak (SkyMind SSO). `url` is the realm issuer, e.g.
-# https://id.dev.skymind.com/realms/secure . Reuse the EXISTING `secure` realm
-# (same as the Intervention client) so sessions are shared. Create a confidential
-# client whose Valid Redirect URI is the Supabase callback (local:
-# http://127.0.0.1:54321/auth/v1/callback ; prod:
-# https://supabase.dev.skymind.com/auth/v1/callback), do NOT require PKCE, and
-# add a Group Membership mapper exposing the user's groups in the `groups` claim
-# (Full group path OFF, Add to access token ON) — src/lib/keycloak.ts reads it.
+# Keycloak / generic OIDC. Optional — off by default. To use it, flip `enabled`
+# to true, set `url` to your realm issuer (e.g.
+# https://id.example.com/realms/<realm>), supply the confidential client's
+# credentials via the SUPABASE_AUTH_EXTERNAL_KEYCLOAK_* env vars, and add
+# "keycloak" to VITE_OAUTH_PROVIDERS. The client's Valid Redirect URI must
+# include the Supabase callback (local: http://127.0.0.1:54321/auth/v1/callback).
 [auth.external.keycloak]
-enabled = true
+enabled = false
 client_id = "env(SUPABASE_AUTH_EXTERNAL_KEYCLOAK_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_EXTERNAL_KEYCLOAK_SECRET)"
 url = "env(SUPABASE_AUTH_EXTERNAL_KEYCLOAK_URL)"

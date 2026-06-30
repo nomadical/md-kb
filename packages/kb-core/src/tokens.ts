@@ -1,23 +1,17 @@
-// Canonical SkyCell KB design tokens — the single source of truth for brand
-// colour, radius, and type, shared by the Next app (its Tailwind `@theme` in
-// src/app/globals.css mirrors these values) and by @md-kb/react's
-// createKbTheme(). Plain values, no framework imports.
+// Canonical KB design tokens — the single source of truth for brand colour,
+// radius, and type. The app's Tailwind theme (src/styles/globals.css) mirrors
+// these values. Plain values, no framework imports.
 
 /**
- * Brand palettes. The KB app and standalone embeds default to SkyCell blue;
- * embeds hosted inside Validaide keep its teal. `primary` is the light-mode
- * accent, `primaryDark` the dark-mode accent, `primaryHover` the hover/active.
+ * Brand palettes. The app defaults to `default` (blue); admins can override the
+ * accent at runtime via Settings → Branding. `primary` is the light-mode accent,
+ * `primaryDark` the dark-mode accent, `primaryHover` the hover/active accent.
  */
 export const KB_BRANDS = {
-  skycell: {
+  default: {
     primary: "#0369a1",
     primaryHover: "#075985",
     primaryDark: "#38bdf8",
-  },
-  validaide: {
-    primary: "#00a69c",
-    primaryHover: "#00857d",
-    primaryDark: "#33c2b9",
   },
 } as const;
 
