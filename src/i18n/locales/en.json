@@ -1,0 +1,329 @@
+{
+  "language": {
+    "label": "Language",
+    "switcher": "Change language",
+    "english": "English",
+    "german": "Deutsch"
+  },
+  "common": {
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "cancel": "Cancel",
+    "restore": "Restore",
+    "discard": "Discard",
+    "loading": "Loading…",
+    "close": "Close",
+    "search": "Search",
+    "searchPlaceholder": "Search…",
+    "commandPlaceholder": "Search articles or run a command…",
+    "noArticles": "No articles.",
+    "browseAll": "Browse all",
+    "general": "General",
+    "articleCount_one": "{{count}} article",
+    "articleCount_other": "{{count}} articles"
+  },
+  "nav": {
+    "knowledgeBase": "Knowledge Base",
+    "ask": "Ask",
+    "askKb": "Ask the KB",
+    "browse": "Browse",
+    "browseAllArticles": "Browse all articles",
+    "home": "Home",
+    "editor": "Editor",
+    "website": "Website",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "theme": "Theme",
+    "reviewQueue": "Review queue",
+    "templates": "Templates",
+    "analytics": "Analytics",
+    "manageUsers": "Manage users",
+    "trash": "Trash",
+    "auditLog": "Audit log",
+    "settings": "Settings",
+    "openSidebar": "Open navigation",
+    "collapseSidebar": "Collapse navigation",
+    "expandSidebar": "Expand navigation",
+    "account": "Account"
+  },
+  "home": {
+    "heroTitle": "How can we help?",
+    "heroSubtitle_one": "Guides, FAQs and how-tos for SkyMind — {{count}} article available to you.",
+    "heroSubtitle_other": "Guides, FAQs and how-tos for SkyMind — {{count}} articles available to you.",
+    "searchPlaceholder": "Search the knowledge base…",
+    "modeLabel": "Search mode",
+    "searchTab": "Search",
+    "askTab": "Ask AI",
+    "askHint": "Ask in plain language — answers are grounded in the articles you can access.",
+    "recentViewLabel": "Recent view",
+    "recentlyUpdated": "Recently updated",
+    "recentlySearched": "Recently searched",
+    "noRecentSearches": "No recent searches yet.",
+    "resultsFor_one": "{{count}} result for “{{query}}”",
+    "resultsFor_other": "{{count}} results for “{{query}}”",
+    "noMatches": "No matches for “{{query}}”.",
+    "nothingPublished": "Nothing published yet.",
+    "browseByCategory": "Browse by category"
+  },
+  "browse": {
+    "title": "Browse the knowledge base",
+    "available_one": "{{count}} article available to you.",
+    "available_other": "{{count}} articles available to you.",
+    "filterPlaceholder": "Filter articles…",
+    "allCategories": "All categories",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "resultCount_one": "{{count}} result",
+    "resultCount_other": "{{count}} results",
+    "noMatch": "No articles match your filter."
+  },
+  "ask": {
+    "placeholder": "Ask a question — e.g. “How do I reschedule a booking?”",
+    "ask": "Ask",
+    "thinking": "Thinking…",
+    "requestFailed": "Request failed.",
+    "noDirectAnswer": "No direct answer — here are the most relevant articles:",
+    "nothingFound": "I couldn’t find anything about that in the articles available to you.",
+    "sources": "Sources",
+    "groundedNote": "Answered only from articles you have access to."
+  },
+  "footer": {
+    "tagline": "Guides, FAQs and how-tos for the SkyCell pharma cold-chain platform.",
+    "rights": "© {{year}} SkyCell AG. All rights reserved."
+  },
+  "auth": {
+    "signInSubtitle": "Sign in to manage the knowledge base.",
+    "redirecting": "Redirecting…",
+    "withKeycloak": "Sign in with SkyMind (Keycloak)",
+    "withMicrosoft": "Sign in with Microsoft"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "switchToLight": "Switch to light",
+    "switchToDark": "Switch to dark",
+    "switchToSystem": "Switch to system"
+  },
+  "reader": {
+    "updated": "Updated {{date}}",
+    "draft": "draft",
+    "previous": "Previous",
+    "next": "Next",
+    "notTranslated": "Not available in {{language}} yet — showing English.",
+    "notAvailable": "Not available in {{language}} yet.",
+    "feedback": {
+      "question": "Was this helpful?",
+      "yes": "Yes",
+      "no": "No",
+      "thanks": "Thanks for your feedback!",
+      "sorry": "Sorry to hear that — what was missing?",
+      "placeholder": "Optional: tell us how to improve this article",
+      "send": "Send feedback"
+    }
+  },
+  "editor": {
+    "title": "Title",
+    "titlePlaceholder": "Title",
+    "slug": "Slug",
+    "folder": "Folder",
+    "tags": "Tags",
+    "tagsPlaceholder": "comma, separated",
+    "contextKeys": "Context keys",
+    "accessRoles": "Access roles",
+    "history": "History",
+    "exitZen": "Exit Zen",
+    "wordCount": "{{count}} words · {{minutes}} min read",
+    "unsaved": "Unsaved · ⌘/Ctrl+S",
+    "saveHint": "⌘/Ctrl+S to save",
+    "savedAt": "Saved {{time}}",
+    "uploading": "Uploading…",
+    "draftFound": "Found an unsaved draft from {{date}}.",
+    "translationManagedOnSource": "Article settings (slug, folder, tags, access) are managed on the English version.",
+    "addTranslation": "Add {{language}} translation",
+    "languageVersion": "{{language}} version"
+  },
+  "review": {
+    "statusDraft": "Draft",
+    "statusInReview": "In review",
+    "statusPublished": "Published",
+    "submitForReview": "Submit for review",
+    "publish": "Publish",
+    "withdraw": "Withdraw",
+    "approveAndPublish": "Approve & publish",
+    "requestChanges": "Request changes",
+    "unpublish": "Unpublish",
+    "view": "View",
+    "changesRequested": "Changes requested: {{note}}"
+  },
+  "admin": {
+    "layout": {
+      "reviewerNotice": "Reviewer access. Approve submissions from the review queue below.",
+      "readOnlyNotice": "Read-only access. You can browse drafts but not edit."
+    },
+    "dashboard": {
+      "selectArticle": "Select an article to edit",
+      "orHit": "or hit <strong>+ New article</strong> to start a fresh one."
+    },
+    "review": {
+      "subtitle": "Articles submitted for review. Open one to approve it for publishing or request changes.",
+      "empty": "Nothing awaiting review.",
+      "root": "(root)",
+      "byline": " · by {{email}}"
+    },
+    "audit": {
+      "subtitle": "Every editorial action and role change, most recent first.",
+      "empty": "No activity recorded yet.",
+      "system": "system",
+      "actions": {
+        "create": "Created",
+        "update": "Edited",
+        "submit": "Submitted",
+        "approve": "Published",
+        "requestChanges": "Changes requested",
+        "unpublish": "Unpublished",
+        "withdraw": "Withdrawn",
+        "trash": "Trashed",
+        "restore": "Restored",
+        "purge": "Deleted",
+        "restoreVersion": "Reverted",
+        "roleChange": "Role changed"
+      },
+      "filter": {
+        "searchPlaceholder": "Search summary or user…",
+        "allActions": "All actions",
+        "showing": "{{count}} of {{total}}",
+        "noMatches": "No entries match your filters."
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "App-wide configuration. Changes apply for everyone.",
+      "save": "Save settings",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "sections": {
+        "branding": "Branding & appearance",
+        "publishing": "Publishing & review",
+        "languages": "Languages & access",
+        "editor": "Editor, AI & analytics"
+      },
+      "branding": {
+        "siteName": "Site name",
+        "siteNameHint": "Shown as the wordmark and in the browser tab.",
+        "tagline": "Tagline",
+        "accentColor": "Accent color",
+        "defaultTheme": "Default theme"
+      },
+      "publishing": {
+        "requireReview": "Require review before publishing",
+        "requireReviewHint": "Editors submit; a reviewer or admin publishes. Off: editors publish their own drafts directly.",
+        "allowAdminSelfReview": "Allow admins to publish their own drafts",
+        "allowAdminSelfReviewHint": "Off: another reviewer must publish an admin's own draft."
+      },
+      "languages": {
+        "enabled": "Enabled languages",
+        "fallback": "Untranslated → fall back to source",
+        "requireLogin": "Require login to read",
+        "defaultRole": "Default role for new users"
+      },
+      "editor": {
+        "defaultView": "Default editor view",
+        "viewEdit": "Edit",
+        "viewSplit": "Split",
+        "viewPreview": "Preview",
+        "tags": "Article tags",
+        "askAi": "Ask the KB (AI)",
+        "feedback": "Feedback widget",
+        "viewTracking": "View tracking",
+        "searchLogging": "Search-query logging"
+      }
+    },
+    "templates": {
+      "subtitle": "Reusable starting points for new articles. Use <code>{{titleTag}}</code>, <code>{{dateTag}}</code>, <code>{{authorTag}}</code> placeholders.",
+      "newTemplate": "New template",
+      "empty": "No templates yet.",
+      "name": "Name",
+      "folder": "Folder",
+      "description": "Description",
+      "tagsLabel": "Tags (comma-separated)",
+      "tagsPlaceholder": "how-to, faq",
+      "contentLabel": "Content — use {{titleTag}}, {{dateTag}}, {{authorTag}} placeholders",
+      "saveChanges": "Save changes",
+      "createTemplate": "Create template",
+      "confirmDelete": "Delete template “{{name}}”?"
+    },
+    "trash": {
+      "subtitle": "Soft-deleted articles. Restore brings one back as a draft; permanent deletion can't be undone.",
+      "empty": "Trash is empty.",
+      "root": "(root)",
+      "trashedOn": "trashed {{date}}",
+      "byline": " by {{email}}",
+      "confirmPurge": "Permanently delete \"{{title}}\"? This cannot be undone."
+    },
+    "users": {
+      "title": "Users & roles",
+      "rolesIntro": "<admin>Admin</admin> manages everything · <editor>Editor</editor> creates & edits articles they're entitled to · <reviewer>Reviewer</reviewer> approves for publishing · <viewer>Viewer</viewer> reads only. Granting an editor an entitlement lets them edit those articles.",
+      "empty": "No users yet. The first person to sign in becomes an admin.",
+      "colUser": "User",
+      "colRole": "Role",
+      "colEntitlements": "Granted entitlements",
+      "you": "(you)",
+      "joined": "joined {{date}}",
+      "cantChangeOwnRole": "You can't change your own role",
+      "fromSso": "from SSO: {{roles}}",
+      "footnote": "Granted entitlements are pinned by you and persist across logins; “from SSO” roles come from Keycloak automatically."
+    },
+    "analytics": {
+      "subtitle": "Anonymous usage across the knowledge base.",
+      "pageVisits": "Page visits",
+      "uniqueVisitors": "Unique visitors",
+      "recurring": "Recurring",
+      "recurringSub": "{{count}} of {{total}}",
+      "avgTimeOnPage": "Avg. time on page",
+      "visitsLast14Days": "Visits — last 14 days",
+      "mostViewed": "Most viewed articles",
+      "needsAttention": "Needs attention (lowest helpfulness)",
+      "mostSearched": "Most searched terms",
+      "mostOpenedFromSearch": "Most opened from search",
+      "searchesNoResults": "Searches with no results",
+      "recentComments": "Recent comments",
+      "timesShort": "{{count}}×",
+      "noData": "No data yet."
+    },
+    "revisions": {
+      "back": "Back to editor",
+      "title": "Version history — {{title}}",
+      "subtitle": "Every content or status change, newest first. Restoring brings back a version's content as a new revision (it never republishes).",
+      "empty": "No revisions yet.",
+      "current": "current",
+      "articleNotFound": "Article not found"
+    },
+    "newArticle": {
+      "newArticle": "New article",
+      "fromTemplate": "New from template",
+      "fromTemplateHeader": "From template"
+    },
+    "folderPicker": {
+      "root": "(root)",
+      "underRoot": "under (root)",
+      "under": "under {{folder}}",
+      "newFolderName": "new folder name",
+      "createFolder": "Create folder"
+    },
+    "accessRolePicker": {
+      "publicNoRoles": "Public (no roles)",
+      "roleCount_one": "{{count}} role",
+      "roleCount_other": "{{count}} roles",
+      "addCustomRole": "add custom role"
+    },
+    "diff": {
+      "tooLarge": "This article is too large to diff inline — open the version history to compare.",
+      "noChanges": "No content changes since the last published version.",
+      "sinceLastPublished": "since last published"
+    }
+  }
+}

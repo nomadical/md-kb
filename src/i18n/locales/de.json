@@ -1,0 +1,329 @@
+{
+  "language": {
+    "label": "Sprache",
+    "switcher": "Sprache wechseln",
+    "english": "English",
+    "german": "Deutsch"
+  },
+  "common": {
+    "save": "Speichern",
+    "saving": "Speichern…",
+    "saved": "Gespeichert",
+    "delete": "Löschen",
+    "deleting": "Löschen…",
+    "cancel": "Abbrechen",
+    "restore": "Wiederherstellen",
+    "discard": "Verwerfen",
+    "loading": "Laden…",
+    "close": "Schließen",
+    "search": "Suchen",
+    "searchPlaceholder": "Suchen…",
+    "commandPlaceholder": "Artikel suchen oder Befehl ausführen…",
+    "noArticles": "Keine Artikel.",
+    "browseAll": "Alle ansehen",
+    "general": "Allgemein",
+    "articleCount_one": "{{count}} Artikel",
+    "articleCount_other": "{{count}} Artikel"
+  },
+  "nav": {
+    "knowledgeBase": "Wissensdatenbank",
+    "ask": "Fragen",
+    "askKb": "Wissensdatenbank fragen",
+    "browse": "Durchsuchen",
+    "browseAllArticles": "Alle Artikel durchsuchen",
+    "home": "Startseite",
+    "editor": "Editor",
+    "website": "Website",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "theme": "Design",
+    "reviewQueue": "Prüf-Warteschlange",
+    "templates": "Vorlagen",
+    "analytics": "Analysen",
+    "manageUsers": "Benutzer verwalten",
+    "trash": "Papierkorb",
+    "auditLog": "Audit-Protokoll",
+    "settings": "Einstellungen",
+    "openSidebar": "Navigation öffnen",
+    "collapseSidebar": "Navigation einklappen",
+    "expandSidebar": "Navigation ausklappen",
+    "account": "Konto"
+  },
+  "home": {
+    "heroTitle": "Wie können wir helfen?",
+    "heroSubtitle_one": "Anleitungen, FAQs und How-tos für SkyMind — {{count}} Artikel für dich verfügbar.",
+    "heroSubtitle_other": "Anleitungen, FAQs und How-tos für SkyMind — {{count}} Artikel für dich verfügbar.",
+    "searchPlaceholder": "Wissensdatenbank durchsuchen…",
+    "modeLabel": "Suchmodus",
+    "searchTab": "Suchen",
+    "askTab": "KI fragen",
+    "askHint": "Frag in normaler Sprache — Antworten basieren auf den Artikeln, auf die du Zugriff hast.",
+    "recentViewLabel": "Zuletzt-Ansicht",
+    "recentlyUpdated": "Kürzlich aktualisiert",
+    "recentlySearched": "Zuletzt gesucht",
+    "noRecentSearches": "Noch keine Suchanfragen.",
+    "resultsFor_one": "{{count}} Ergebnis für „{{query}}“",
+    "resultsFor_other": "{{count}} Ergebnisse für „{{query}}“",
+    "noMatches": "Keine Treffer für „{{query}}“.",
+    "nothingPublished": "Noch nichts veröffentlicht.",
+    "browseByCategory": "Nach Kategorie durchsuchen"
+  },
+  "browse": {
+    "title": "Wissensdatenbank durchsuchen",
+    "available_one": "{{count}} Artikel für dich verfügbar.",
+    "available_other": "{{count}} Artikel für dich verfügbar.",
+    "filterPlaceholder": "Artikel filtern…",
+    "allCategories": "Alle Kategorien",
+    "gridView": "Rasteransicht",
+    "listView": "Listenansicht",
+    "resultCount_one": "{{count}} Ergebnis",
+    "resultCount_other": "{{count}} Ergebnisse",
+    "noMatch": "Keine Artikel entsprechen deinem Filter."
+  },
+  "ask": {
+    "placeholder": "Stell eine Frage — z. B. „Wie verschiebe ich eine Buchung?“",
+    "ask": "Fragen",
+    "thinking": "Denke nach…",
+    "requestFailed": "Anfrage fehlgeschlagen.",
+    "noDirectAnswer": "Keine direkte Antwort — hier sind die relevantesten Artikel:",
+    "nothingFound": "Dazu konnte ich in den für dich verfügbaren Artikeln nichts finden.",
+    "sources": "Quellen",
+    "groundedNote": "Beantwortet nur aus Artikeln, auf die du Zugriff hast."
+  },
+  "footer": {
+    "tagline": "Anleitungen, FAQs und How-tos für die SkyCell-Pharma-Kühlkettenplattform.",
+    "rights": "© {{year}} SkyCell AG. Alle Rechte vorbehalten."
+  },
+  "auth": {
+    "signInSubtitle": "Melde dich an, um die Wissensdatenbank zu verwalten.",
+    "redirecting": "Weiterleiten…",
+    "withKeycloak": "Mit SkyMind (Keycloak) anmelden",
+    "withMicrosoft": "Mit Microsoft anmelden"
+  },
+  "theme": {
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System",
+    "switchToLight": "Zu Hell wechseln",
+    "switchToDark": "Zu Dunkel wechseln",
+    "switchToSystem": "Zu System wechseln"
+  },
+  "reader": {
+    "updated": "Aktualisiert {{date}}",
+    "draft": "Entwurf",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "notTranslated": "Noch nicht auf {{language}} verfügbar – Englisch wird angezeigt.",
+    "notAvailable": "Noch nicht auf {{language}} verfügbar.",
+    "feedback": {
+      "question": "War das hilfreich?",
+      "yes": "Ja",
+      "no": "Nein",
+      "thanks": "Danke für dein Feedback!",
+      "sorry": "Schade — was hat gefehlt?",
+      "placeholder": "Optional: Sag uns, wie wir diesen Artikel verbessern können",
+      "send": "Feedback senden"
+    }
+  },
+  "editor": {
+    "title": "Titel",
+    "titlePlaceholder": "Titel",
+    "slug": "Slug",
+    "folder": "Ordner",
+    "tags": "Schlagwörter",
+    "tagsPlaceholder": "komma, getrennt",
+    "contextKeys": "Kontext-Schlüssel",
+    "accessRoles": "Zugriffsrollen",
+    "history": "Verlauf",
+    "exitZen": "Zen beenden",
+    "wordCount": "{{count}} Wörter · {{minutes}} Min. Lesezeit",
+    "unsaved": "Nicht gespeichert · ⌘/Strg+S",
+    "saveHint": "⌘/Strg+S zum Speichern",
+    "savedAt": "Gespeichert {{time}}",
+    "uploading": "Hochladen…",
+    "draftFound": "Nicht gespeicherter Entwurf vom {{date}} gefunden.",
+    "translationManagedOnSource": "Artikel-Einstellungen (Slug, Ordner, Schlagwörter, Zugriff) werden in der englischen Version verwaltet.",
+    "addTranslation": "{{language}}-Übersetzung hinzufügen",
+    "languageVersion": "{{language}}-Version"
+  },
+  "review": {
+    "statusDraft": "Entwurf",
+    "statusInReview": "In Prüfung",
+    "statusPublished": "Veröffentlicht",
+    "submitForReview": "Zur Prüfung einreichen",
+    "publish": "Veröffentlichen",
+    "withdraw": "Zurückziehen",
+    "approveAndPublish": "Genehmigen & veröffentlichen",
+    "requestChanges": "Änderungen anfordern",
+    "unpublish": "Veröffentlichung zurücknehmen",
+    "view": "Ansehen",
+    "changesRequested": "Änderungen angefordert: {{note}}"
+  },
+  "admin": {
+    "layout": {
+      "reviewerNotice": "Prüfer-Zugriff. Genehmige Einreichungen aus der Prüf-Warteschlange unten.",
+      "readOnlyNotice": "Nur-Lese-Zugriff. Du kannst Entwürfe ansehen, aber nicht bearbeiten."
+    },
+    "dashboard": {
+      "selectArticle": "Wähle einen Artikel zum Bearbeiten",
+      "orHit": "oder klicke auf <strong>+ Neuer Artikel</strong>, um einen neuen zu beginnen."
+    },
+    "review": {
+      "subtitle": "Zur Prüfung eingereichte Artikel. Öffne einen, um ihn zur Veröffentlichung zu genehmigen oder Änderungen anzufordern.",
+      "empty": "Nichts wartet auf Prüfung.",
+      "root": "(Stamm)",
+      "byline": " · von {{email}}"
+    },
+    "audit": {
+      "subtitle": "Jede redaktionelle Aktion und Rollenänderung, neueste zuerst.",
+      "empty": "Noch keine Aktivität aufgezeichnet.",
+      "system": "System",
+      "actions": {
+        "create": "Erstellt",
+        "update": "Bearbeitet",
+        "submit": "Eingereicht",
+        "approve": "Veröffentlicht",
+        "requestChanges": "Änderungen angefordert",
+        "unpublish": "Veröffentlichung zurückgenommen",
+        "withdraw": "Zurückgezogen",
+        "trash": "In Papierkorb",
+        "restore": "Wiederhergestellt",
+        "purge": "Gelöscht",
+        "restoreVersion": "Zurückgesetzt",
+        "roleChange": "Rolle geändert"
+      },
+      "filter": {
+        "searchPlaceholder": "Zusammenfassung oder Benutzer suchen…",
+        "allActions": "Alle Aktionen",
+        "showing": "{{count}} von {{total}}",
+        "noMatches": "Keine Einträge entsprechen den Filtern."
+      }
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "subtitle": "App-weite Konfiguration. Änderungen gelten für alle.",
+      "save": "Einstellungen speichern",
+      "saving": "Speichern…",
+      "saved": "Gespeichert",
+      "sections": {
+        "branding": "Branding & Darstellung",
+        "publishing": "Veröffentlichung & Prüfung",
+        "languages": "Sprachen & Zugriff",
+        "editor": "Editor, KI & Analyse"
+      },
+      "branding": {
+        "siteName": "Seitenname",
+        "siteNameHint": "Wird als Wortmarke und im Browser-Tab angezeigt.",
+        "tagline": "Slogan",
+        "accentColor": "Akzentfarbe",
+        "defaultTheme": "Standard-Design"
+      },
+      "publishing": {
+        "requireReview": "Prüfung vor Veröffentlichung verlangen",
+        "requireReviewHint": "Redakteure reichen ein; ein Prüfer oder Admin veröffentlicht. Aus: Redakteure veröffentlichen ihre eigenen Entwürfe direkt.",
+        "allowAdminSelfReview": "Admins dürfen eigene Entwürfe veröffentlichen",
+        "allowAdminSelfReviewHint": "Aus: Den eigenen Entwurf eines Admins muss ein anderer Prüfer veröffentlichen."
+      },
+      "languages": {
+        "enabled": "Aktivierte Sprachen",
+        "fallback": "Unübersetzt → auf Ausgangssprache zurückfallen",
+        "requireLogin": "Anmeldung zum Lesen erforderlich",
+        "defaultRole": "Standardrolle für neue Benutzer"
+      },
+      "editor": {
+        "defaultView": "Standard-Editoransicht",
+        "viewEdit": "Bearbeiten",
+        "viewSplit": "Geteilt",
+        "viewPreview": "Vorschau",
+        "tags": "Artikel-Tags",
+        "askAi": "Wissensdatenbank fragen (KI)",
+        "feedback": "Feedback-Widget",
+        "viewTracking": "Aufruf-Tracking",
+        "searchLogging": "Protokollierung von Suchanfragen"
+      }
+    },
+    "templates": {
+      "subtitle": "Wiederverwendbare Ausgangspunkte für neue Artikel. Nutze die Platzhalter <code>{{titleTag}}</code>, <code>{{dateTag}}</code>, <code>{{authorTag}}</code>.",
+      "newTemplate": "Neue Vorlage",
+      "empty": "Noch keine Vorlagen.",
+      "name": "Name",
+      "folder": "Ordner",
+      "description": "Beschreibung",
+      "tagsLabel": "Schlagwörter (kommagetrennt)",
+      "tagsPlaceholder": "how-to, faq",
+      "contentLabel": "Inhalt — nutze die Platzhalter {{titleTag}}, {{dateTag}}, {{authorTag}}",
+      "saveChanges": "Änderungen speichern",
+      "createTemplate": "Vorlage erstellen",
+      "confirmDelete": "Vorlage „{{name}}“ löschen?"
+    },
+    "trash": {
+      "subtitle": "Soft-gelöschte Artikel. Wiederherstellen bringt einen als Entwurf zurück; endgültiges Löschen kann nicht rückgängig gemacht werden.",
+      "empty": "Papierkorb ist leer.",
+      "root": "(Stamm)",
+      "trashedOn": "gelöscht {{date}}",
+      "byline": " von {{email}}",
+      "confirmPurge": "„{{title}}“ endgültig löschen? Dies kann nicht rückgängig gemacht werden."
+    },
+    "users": {
+      "title": "Benutzer & Rollen",
+      "rolesIntro": "<admin>Admin</admin> verwaltet alles · <editor>Editor</editor> erstellt & bearbeitet Artikel, für die er berechtigt ist · <reviewer>Reviewer</reviewer> genehmigt zur Veröffentlichung · <viewer>Viewer</viewer> liest nur. Wenn du einem Editor eine Berechtigung gewährst, kann er diese Artikel bearbeiten.",
+      "empty": "Noch keine Benutzer. Die erste Person, die sich anmeldet, wird Admin.",
+      "colUser": "Benutzer",
+      "colRole": "Rolle",
+      "colEntitlements": "Gewährte Berechtigungen",
+      "you": "(du)",
+      "joined": "beigetreten {{date}}",
+      "cantChangeOwnRole": "Du kannst deine eigene Rolle nicht ändern",
+      "fromSso": "von SSO: {{roles}}",
+      "footnote": "Gewährte Berechtigungen werden von dir festgelegt und bleiben über Anmeldungen hinweg bestehen; „von SSO“-Rollen kommen automatisch von Keycloak."
+    },
+    "analytics": {
+      "subtitle": "Anonyme Nutzung der gesamten Wissensdatenbank.",
+      "pageVisits": "Seitenaufrufe",
+      "uniqueVisitors": "Eindeutige Besucher",
+      "recurring": "Wiederkehrend",
+      "recurringSub": "{{count}} von {{total}}",
+      "avgTimeOnPage": "Ø Verweildauer",
+      "visitsLast14Days": "Aufrufe — letzte 14 Tage",
+      "mostViewed": "Meistgelesene Artikel",
+      "needsAttention": "Benötigt Aufmerksamkeit (geringste Hilfreichkeit)",
+      "mostSearched": "Meistgesuchte Begriffe",
+      "mostOpenedFromSearch": "Am häufigsten aus der Suche geöffnet",
+      "searchesNoResults": "Suchen ohne Ergebnisse",
+      "recentComments": "Aktuelle Kommentare",
+      "timesShort": "{{count}}×",
+      "noData": "Noch keine Daten."
+    },
+    "revisions": {
+      "back": "Zurück zum Editor",
+      "title": "Versionsverlauf — {{title}}",
+      "subtitle": "Jede Inhalts- oder Statusänderung, neueste zuerst. Beim Wiederherstellen wird der Inhalt einer Version als neue Revision zurückgebracht (nie erneut veröffentlicht).",
+      "empty": "Noch keine Revisionen.",
+      "current": "aktuell",
+      "articleNotFound": "Artikel nicht gefunden"
+    },
+    "newArticle": {
+      "newArticle": "Neuer Artikel",
+      "fromTemplate": "Neu aus Vorlage",
+      "fromTemplateHeader": "Aus Vorlage"
+    },
+    "folderPicker": {
+      "root": "(Stamm)",
+      "underRoot": "unter (Stamm)",
+      "under": "unter {{folder}}",
+      "newFolderName": "Neuer Ordnername",
+      "createFolder": "Ordner erstellen"
+    },
+    "accessRolePicker": {
+      "publicNoRoles": "Öffentlich (keine Rollen)",
+      "roleCount_one": "{{count}} Rolle",
+      "roleCount_other": "{{count}} Rollen",
+      "addCustomRole": "Eigene Rolle hinzufügen"
+    },
+    "diff": {
+      "tooLarge": "Dieser Artikel ist zu groß für einen Inline-Vergleich — öffne den Versionsverlauf zum Vergleichen.",
+      "noChanges": "Keine inhaltlichen Änderungen seit der letzten veröffentlichten Version.",
+      "sinceLastPublished": "seit der letzten Veröffentlichung"
+    }
+  }
+}

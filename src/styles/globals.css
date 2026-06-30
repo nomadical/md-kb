@@ -1,0 +1,190 @@
+@import "tailwindcss";
+/* Keep using the JS config (content globs + the `ink` color palette). */
+@config "../../tailwind.config.ts";
+
+/* Theme tokens as CSS variables so `data-theme` on <html> swaps them globally.
+   tailwind.config.ts maps ink.* -> these vars, so every `bg-ink-*` class and
+   `theme("colors.ink.*")` call below switches automatically.
+
+   Canonical brand values live in packages/kb-core/src/tokens.ts (KB_BRANDS /
+   KB_NEUTRALS), shared with @skycell-ag/kb-react's createKbTheme(). The accent
+   below is SkyCell blue (KB_BRANDS.skycell); keep the two in sync. */
+:root {
+  --ink-bg: #f4f6f9;
+  --ink-panel: #ffffff;
+  --ink-line: #d7dde5;
+  --ink-mut: #475569;
+  --ink-fg: #0f172a;
+  --ink-accent: #0369a1;
+  --ink-accentHover: #075985;
+  --prose-code-bg: #eef1f6;
+  --prose-code-fg: #b91c1c;
+  --prose-th-bg: #f6f6f5;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --ink-bg: #0b1220;
+  --ink-panel: #111a2b;
+  --ink-line: #273449;
+  --ink-mut: #94a3b8;
+  --ink-fg: #e2e8f0;
+  --ink-accent: #38bdf8;
+  --ink-accentHover: #7dd3fc;
+  --prose-code-bg: #1e293b;
+  --prose-code-fg: #fca5a5;
+  --prose-th-bg: #172033;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: theme("colors.ink.bg");
+  color: theme("colors.ink.fg");
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Soft entrance for page content */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fade-up 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .fade-up {
+    animation: none;
+  }
+}
+
+/* Rendered markdown ("prose") styling — kept small & dependency-free. */
+.prose {
+  line-height: 1.75;
+  font-size: 1rem;
+  color: theme("colors.ink.fg");
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 650;
+  line-height: 1.25;
+  margin: 1.6em 0 0.6em;
+  scroll-margin-top: 88px; /* anchored headings clear sticky bars */
+}
+.prose h1 {
+  font-size: 1.7rem;
+}
+.prose h2 {
+  font-size: 1.35rem;
+}
+.prose h3 {
+  font-size: 1.12rem;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre,
+.prose table {
+  margin: 0.7em 0;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose a {
+  color: theme("colors.ink.accent");
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose code {
+  background: var(--prose-code-bg);
+  color: var(--prose-code-fg);
+  padding: 0.12em 0.36em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+.prose pre {
+  background: #1e1e2e;
+  color: #e4e4ef;
+  padding: 1em 1.1em;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.prose blockquote {
+  border-left: 3px solid theme("colors.ink.accent");
+  padding-left: 1em;
+  color: theme("colors.ink.mut");
+}
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.prose th,
+.prose td {
+  border: 1px solid theme("colors.ink.line");
+  padding: 0.5em 0.7em;
+  text-align: left;
+}
+.prose th {
+  background: var(--prose-th-bg);
+  font-weight: 600;
+}
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid theme("colors.ink.line");
+  margin: 1.6em 0;
+}
+
+/* Internal wiki-links */
+.wikilink {
+  color: theme("colors.ink.accent");
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+}
+.wikilink.is-missing {
+  color: #c2410c;
+}
+
+/* Make the bundled MD editor sit flush in our layout */
+.w-md-editor {
+  box-shadow: none !important;
+}

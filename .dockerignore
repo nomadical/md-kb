@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+dist
+**/dist
+.next
+.git
+.github
+.idea
+.vscode
+.playwright-mcp
+*.log
+*.tsbuildinfo
+.env*.local
+coverage

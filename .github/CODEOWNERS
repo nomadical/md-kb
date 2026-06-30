@@ -1,0 +1,11 @@
+# Code owners for knowledge-base-app.
+# These teams are requested for review on any PR touching matching paths.
+# https://docs.github.com/articles/about-code-owners
+
+# Default owners — the whole repo.
+*                       @SkyCell-AG/asset-management-fe-team @SkyCell-AG/shipment-visibility-fe-team
+
+# Deployment / CI / infra
+/.github/               @SkyCell-AG/asset-management-fe-team @SkyCell-AG/shipment-visibility-fe-team
+/deploy/                @SkyCell-AG/asset-management-fe-team @SkyCell-AG/shipment-visibility-fe-team
+/supabase/              @SkyCell-AG/asset-management-fe-team @SkyCell-AG/shipment-visibility-fe-team
