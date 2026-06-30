@@ -41,9 +41,15 @@ sign-up becomes admin; configure the rest in Admin → Settings.
       `@skycell-ag/scd-lib`) and its Dockerfile/CI references.
 
 ## Deferred (polish, not blockers)
-- [ ] `supabase/config.toml` still carries a commented Keycloak external-auth
-      template + `supabase/AUTH-kb-embed.md` (a SkyCell auth note); the
-      `KB_BRANDS.skycell` palette in kb-core is the default brand blue.
+- [x] Purged residual SkyCell/Keycloak config + branding: disabled the
+      azure/keycloak external-auth providers and genericized their comments in
+      `supabase/config.toml`; deleted `supabase/AUTH-kb-embed.md` and the
+      `@SkyCell-AG` `.github/CODEOWNERS`; renamed `KB_BRANDS.skycell` →
+      `KB_BRANDS.default` (dropped the validaide palette); dropped the dead
+      `VITE_KEYCLOAK_*` env types; neutralized the SSO footnote + theme comments.
+- [ ] `docs/` still contains the SkyCell-internal architecture notes, ADRs, and
+      ops/parity docs (SkyMind infra, Keycloak, Azure). Decide per-file:
+      genericize the design docs worth keeping, drop the internal ops ones.
 
 ## Milestone 5 — improvements (per request: OSS hardening + UX + features + code quality)
 - Scoped as follow-up PRs once the repo is published.

@@ -287,7 +287,7 @@
       "joined": "joined {{date}}",
       "cantChangeOwnRole": "You can't change your own role",
       "fromSso": "from SSO: {{roles}}",
-      "footnote": "Granted entitlements are pinned by you and persist across logins; “from SSO” roles come from Keycloak automatically."
+      "footnote": "Granted entitlements are pinned by you and persist across logins; “from SSO” roles come from your identity provider automatically."
     },
     "analytics": {
       "subtitle": "Anonymous usage across the knowledge base.",
