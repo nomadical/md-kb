@@ -6,6 +6,7 @@ import adminRouter from "./routes/admin";
 import askRouter from "./routes/ask";
 import mediaRouter from "./routes/media";
 import mcpRouter from "./routes/mcp";
+import sitemapRouter from "./routes/sitemap";
 
 // Thin backend for the KB SPA: audited editorial writes + secret-bearing
 // endpoints (upload/ask/MCP/auth-sync), and serves the built SPA in production.
@@ -22,6 +23,9 @@ app.use(`${api}/admin`, adminRouter);
 app.use(`${api}/mcp`, mcpRouter);
 app.use(api, askRouter); // POST /ask
 app.use(api, mediaRouter); // POST /upload, /track, /search
+
+// SEO endpoints at the domain root, where crawlers expect them.
+app.use("/", sitemapRouter);
 
 // Serve the built SPA + history fallback (production). In dev, run Vite (3005)
 // with a proxy to this server instead (see vite.config.ts).
