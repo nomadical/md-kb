@@ -20,26 +20,28 @@ write them in an Obsidian-style split editor with live preview.
 
 ## Quickstart
 
+Prerequisites: **Node 22+**, **Docker**, and the **[Supabase CLI](https://supabase.com/docs/guides/cli)**.
+
 ```bash
-# 1. Install
 npm install
-
-# 2. Configure
-cp .env.example .env.local        # fill in your Supabase URL + keys
-
-# 3. Database (local Supabase, or point DATABASE_URL at your project)
-supabase start                    # or use a hosted Supabase project
-npm run db:migrate                # applies supabase/migrations.sql
-npm run db:seed                   # optional: a few demo articles
-
-# 4. Run
-npm run dev                       # Vite SPA
-npm run server:dev                # Express API (separate terminal)
+npm run setup          # starts local Supabase, wires .env.local, migrates + seeds
+npm run dev            # SPA  → http://localhost:5173
+npm run server:dev     # API  (separate terminal)
 ```
 
 Open the app and **sign up** — the first account becomes the **admin**. From
 **Admin → Settings** you can set the site name, theme, enabled languages, and
 publishing policy.
+
+### Hosted Supabase (instead of local)
+
+Skip `npm run setup`; instead copy `.env.example` to `.env.local`, fill in your
+project's URL + keys, then:
+
+```bash
+npm run db:migrate     # applies supabase/migrations.sql
+npm run db:seed        # optional demo content
+```
 
 ## Auth
 

@@ -1,15 +1,14 @@
-name: Lint
+name: CI
 
-# Runs oxlint (with GitHub annotations) + a TypeScript typecheck on every PR
-# and on pushes to main.
+# Lint + typecheck + tests on every PR and on pushes to main.
 on:
   pull_request:
   push:
     branches: [main]
 
 jobs:
-  lint:
-    name: oxlint + typecheck
+  ci:
+    name: lint · typecheck · test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,10 +17,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --ignore-scripts
+      # Build the workspace packages first so tsc/vitest resolve @md-kb/core
+      # (its types/build come from packages/kb-core/dist).
+      - run: npm run build:packages
       - name: oxlint
         run: npx oxlint --format=github
       - name: typecheck
-        # Build the workspace packages first so tsc can resolve @md-kb/core
-        # (its types come from packages/kb-core/dist). Without this, tsc reports
-        # "Cannot find module '@md-kb/core'".
-        run: npm run build:packages && npx tsc --noEmit
+        run: npx tsc --noEmit
+      - name: test
+        run: npm test
