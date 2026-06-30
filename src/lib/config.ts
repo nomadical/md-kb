@@ -42,3 +42,9 @@ export const OAUTH_PROVIDERS = (viteEnv?.VITE_OAUTH_PROVIDERS ?? "")
   .split(",")
   .map((s) => s.trim().toLowerCase())
   .filter(Boolean);
+
+/** Show the in-app "create account" option. Set VITE_ALLOW_SIGNUP=false for a
+ *  curated/demo instance (also disable sign-ups in the Supabase dashboard — that
+ *  is the real boundary; this just hides the UI). */
+export const ALLOW_SIGNUP =
+  (viteEnv?.VITE_ALLOW_SIGNUP ?? nodeEnv?.VITE_ALLOW_SIGNUP ?? "true") !== "false";

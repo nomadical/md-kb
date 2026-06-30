@@ -1,136 +1,63 @@
-# Deploying md-kb behind fe-node-services (`/knowledge-base`)
+# Deploy md-kb (Fly.io + Supabase Cloud)
 
-The app is a **Vite + React-Router SPA with a thin Express backend** (see
-[ADR 0003](adr/0003-vite-spa-thin-express-backend.md)). A single container
-(`Dockerfile`) runs `server/index.ts`, which serves the built SPA (`dist/`) and
-the API under **base path `/knowledge-base`** (`BASE_PATH` in `server/env.ts`,
-matching the Vite `base`). It plugs into the existing `fe-node-services` stack,
-which is exposed through **Traefik** at `node-services.<env>.skymind.com`. The
-container listens on **port 3000** (`Dockerfile` sets `PORT=3000`).
+The app is one Docker image (the Express server serves the built SPA **and** the
+`/api/*` endpoints). State lives in a Supabase project. This guide deploys a
+public **demo** to Fly.io with a curated admin + sign-ups disabled.
 
-> There is no Next.js, no `next.config.ts`, and no `output: standalone`. The base
-> path is owned by the app itself (Vite `base` + the Express mounts), so **no
-> StripPrefix middleware is needed** — the app expects the `/knowledge-base`
-> prefix on every route, including `/knowledge-base/api/*`.
+## 1. Supabase project
 
-## Option A — Traefik route (recommended)
+1. Create a project at <https://supabase.com/dashboard>.
+2. **Project Settings → API**: copy the **Project URL**, the **anon/publishable
+   key** (public), and the **service-role/secret key** (server-only).
+3. Apply the schema. Easiest from your machine, pointed at the project DB:
+   ```bash
+   DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[REF].supabase.co:5432/postgres" npm run db:migrate
+   DATABASE_URL="...same..." npm run db:seed     # optional demo content
+   ```
+   (DB connection string: Project Settings → Database.)
 
-No code changes in fe-node-services: add md-kb as a sibling service in
-`fe-node-services/docker-compose.yaml` and let Traefik route the path:
-
-```yaml
-  knowledge-base:
-    image: skycellregistry.azurecr.io/knowledge-base:${KB_IMAGE_VERSION}
-    restart: always
-    container_name: fe-node-services_kb_1
-    environment:
-      # Runtime env the Express server reads (server/env.ts). These keep the
-      # NEXT_PUBLIC_* names for back-compat even though the client now reads VITE_*.
-      - "NEXT_PUBLIC_SUPABASE_URL=https://supabase.${ENV_URL_PREFIX}skymind.com"
-      - "NEXT_PUBLIC_SUPABASE_ANON_KEY=${KB_SUPABASE_ANON_KEY}"
-      - "NEXT_PUBLIC_SITE_URL=https://node-services.${ENV_URL_PREFIX}skymind.com/knowledge-base"
-      - "SUPABASE_SERVICE_ROLE_KEY=${KB_SUPABASE_SERVICE_ROLE_KEY}"
-      # Optional: MCP connector + Ask-the-KB (omit to disable those features).
-      - "MCP_API_TOKEN=${KB_MCP_API_TOKEN}"
-    networks:
-      - web
-    expose:
-      - 3000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=web"
-      - "traefik.http.routers.knowledge-base.entrypoints=https"
-      - "traefik.http.routers.knowledge-base.tls=true"
-      - "traefik.http.routers.knowledge-base.tls.certresolver=letsEncrypt"
-      - "traefik.http.routers.knowledge-base.rule=Host(`node-services.${ENV_URL_PREFIX}skymind.com`) && PathPrefix(`/knowledge-base`)"
-      - "traefik.http.routers.knowledge-base.service=knowledge-base"
-      - "traefik.http.services.knowledge-base.loadbalancer.server.port=3000"
-```
-
-## Option B — Express endpoint inside fe-node-services
-
-If you'd rather route through `server.ts` (adds a proxy hop):
-
-```ts
-// pnpm add http-proxy-middleware
-import { createProxyMiddleware } from "http-proxy-middleware";
-
-app.use(
-  "/knowledge-base",
-  createProxyMiddleware({
-    target: process.env.KB_URL ?? "http://fe-node-services_kb_1:3000",
-    changeOrigin: true,
-    // The base path is expected by the app — don't strip it.
-    pathRewrite: (path) => `/knowledge-base${path}`,
-  }),
-);
-```
-
-(The container still needs to be on the same network; Option A is simpler.)
-
-## Build args vs. runtime env (important)
-
-The two halves of the container read config from **different** places — get this
-wrong and you ship a blank SPA or a 404-ing backend:
-
-| Consumer | Reads | Set at | Vars |
-|---|---|---|---|
-| SPA (browser bundle) | `import.meta.env.VITE_*` | **build time** (inlined into `dist/`) | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SITE_URL`, `VITE_KEYCLOAK_LOGOUT_URL` |
-| Express backend | `process.env.*` (`server/env.ts`) | **runtime** | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `MCP_API_TOKEN`, `KB_SITE_URL`/`NEXT_PUBLIC_SITE_URL`, `PORT` |
-
-`VITE_*` values are baked into the static bundle and **cannot** be changed
-without rebuilding. Server-only secrets (`SUPABASE_SERVICE_ROLE_KEY`,
-`MCP_API_TOKEN`, LLM/embeddings) are runtime-only and must **never** be passed as
-`VITE_*` build args — that would leak them into the browser bundle.
-
-## Build & push the image
+## 2. Deploy to Fly
 
 ```bash
-docker build -t skycellregistry.azurecr.io/knowledge-base:$VERSION \
-  --build-arg VITE_SUPABASE_URL=https://supabase.dev.skymind.com \
-  --build-arg VITE_SUPABASE_ANON_KEY=<anon-key> \
-  --build-arg VITE_SITE_URL=https://node-services.dev.skymind.com/knowledge-base \
-  --build-arg VITE_KEYCLOAK_LOGOUT_URL=https://id.dev.skymind.com/realms/secure/protocol/openid-connect/logout \
-  .
-docker push skycellregistry.azurecr.io/knowledge-base:$VERSION
+fly auth login
+fly launch --no-deploy            # edit app name/region in fly.toml, or accept
+
+# build-time (baked into the SPA; the anon key is public)
+fly deploy \
+  --build-arg VITE_SUPABASE_URL=https://[REF].supabase.co \
+  --build-arg VITE_SUPABASE_ANON_KEY=[ANON_KEY] \
+  --build-arg VITE_SITE_URL=https://[APP].fly.dev \
+  --build-arg VITE_ALLOW_SIGNUP=true       # keep true for the first sign-up
+
+# runtime secret (server only)
+fly secrets set SUPABASE_SERVICE_ROLE_KEY=[SERVICE_ROLE_KEY]
 ```
 
-CI normally does this — every push to `main` triggers a `repository_dispatch`
-to `SkyCell-AG/fe-node-services`, which owns the Azure OIDC credential, the ACR
-push role, and the self-hosted runner (see `.github/workflows/deploy-dev.yml`).
+In Supabase **Authentication → URL Configuration**, add `https://[APP].fly.dev`
+to the **Site URL** + **Redirect URLs** (so magic-link/OAuth return correctly).
 
-## Production checklist
+## 3. Demo mode (curated admin, no public sign-up)
 
-1. **Supabase (self-hosted)**: per [ADR 0001](adr/0001-self-hosted-supabase.md),
-   stand up the trimmed self-hosted stack — follow
-   [`deploy/supabase/RUNBOOK.md`](../deploy/supabase/RUNBOOK.md). The schema and
-   Keycloak provider are wired there; the local CLI stack is dev-only. The
-   stack's Kong gateway is the single public entrypoint and **must be attached to
-   the Traefik `web` network** at `supabase.<env>.skymind.com` — if it stops or
-   drops off that network, Traefik returns a bare `404 page not found` for every
-   `/auth/*` and `/rest/*` path, which breaks both login and article loading.
-2. **Keycloak (`md-kb` client in the `secure` realm)**: add the Supabase callback
-   `https://supabase.<env>.skymind.com/auth/v1/callback` to *Valid Redirect
-   URIs* (keep the Group Membership `groups` mapper; PKCE not enforced).
-3. **App env**: build args `VITE_SUPABASE_URL=https://supabase.<env>.skymind.com`,
-   `VITE_SUPABASE_ANON_KEY=<ANON_KEY>` (baked into the SPA); runtime
-   `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` (same values, for
-   the backend) plus the secret `SUPABASE_SERVICE_ROLE_KEY=<SERVICE_ROLE_KEY>`
-   (all from `deploy/supabase/.env`).
-4. **Secrets at runtime**: `SUPABASE_SERVICE_ROLE_KEY` (for the Keycloak →
-   editorial role sync and audited writes). Never bake it into the image.
-5. **Disable the dev email login** in prod — the magic-link fallback is off
-   automatically when the bundle is built outside dev unless
-   `VITE_ENABLE_EMAIL_LOGIN=true` (see `src/spa/pages/LoginPage.tsx`).
+1. Open `https://[APP].fly.dev`, **sign up once** — the first account becomes the
+   **admin**. Use the credentials you want to share.
+2. Lock it down in Supabase **Authentication → Providers → Email**: turn **off**
+   "Allow new users to sign up". (This is the real boundary.)
+3. Optional: hide the sign-up UI by redeploying with
+   `--build-arg VITE_ALLOW_SIGNUP=false`.
+4. Curate from **Admin → Settings** (site name, theme, languages) and publish a
+   few articles.
 
-## Smoke test after deploy
+## Optional: AI ("Ask the KB")
+
+Off by default. To enable, set runtime secrets pointing at any
+OpenAI-compatible endpoint and turn it on in Admin → Settings:
 
 ```bash
-# SPA + history fallback (should be 200 and serve index.html)
-curl -sI https://node-services.<env>.skymind.com/knowledge-base/ | head -1
-# Backend health
-curl -s  https://node-services.<env>.skymind.com/knowledge-base/api/health   # {"ok":true}
-# Supabase reachable through Traefik (NOT a bare "404 page not found")
-curl -s  "https://supabase.<env>.skymind.com/auth/v1/settings" -H "apikey: <ANON_KEY>"
-curl -s  "https://supabase.<env>.skymind.com/rest/v1/articles?select=slug&limit=1" -H "apikey: <ANON_KEY>"
+fly secrets set EMBEDDINGS_URL=... EMBEDDINGS_MODEL=... CHAT_URL=... CHAT_MODEL=... OPENAI_API_KEY=...
 ```
+
+## Other hosts
+
+The same image runs anywhere that takes a Dockerfile (Render, Railway, a VPS).
+Pass the `VITE_*` build args at build time and `SUPABASE_SERVICE_ROLE_KEY` at
+runtime; expose port `8787`.

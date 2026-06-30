@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
-import { BASE_PATH as BP, OAUTH_PROVIDERS, SITE_URL } from "@/lib/config";
+import { ALLOW_SIGNUP, BASE_PATH as BP, OAUTH_PROVIDERS, SITE_URL } from "@/lib/config";
 
 const PROVIDER_LABEL: Record<string, string> = {
   github: "GitHub",
@@ -116,13 +116,17 @@ export default function AuthPanel({ next = "/admin" }: { next?: string }) {
       </form>
 
       <div className="mt-3 flex items-center justify-between text-[12px] text-ink-mut">
-        <button
-          type="button"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="hover:text-ink-accent"
-        >
-          {mode === "signin" ? t("auth.needAccount") : t("auth.haveAccount")}
-        </button>
+        {ALLOW_SIGNUP ? (
+          <button
+            type="button"
+            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="hover:text-ink-accent"
+          >
+            {mode === "signin" ? t("auth.needAccount") : t("auth.haveAccount")}
+          </button>
+        ) : (
+          <span />
+        )}
         <button type="button" onClick={magicLink} disabled={busy} className="hover:text-ink-accent">
           {t("auth.emailMagicLink")}
         </button>
