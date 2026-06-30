@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs";
 import express from "express";
 import cors from "cors";
 import { PORT, DIST_DIR, BASE_PATH } from "./env";
@@ -7,6 +8,7 @@ import askRouter from "./routes/ask";
 import mediaRouter from "./routes/media";
 import mcpRouter from "./routes/mcp";
 import sitemapRouter from "./routes/sitemap";
+import { renderShell } from "./html";
 
 // Thin backend for the KB SPA: audited editorial writes + secret-bearing
 // endpoints (upload/ask/MCP/auth-sync), and serves the built SPA in production.
@@ -31,9 +33,19 @@ app.use("/", sitemapRouter);
 // with a proxy to this server instead (see vite.config.ts).
 const dist = path.resolve(process.cwd(), DIST_DIR);
 app.use(BASE_PATH, express.static(dist));
+// Cache the shell once; article routes get per-request OG/meta injected.
+const indexHtml = (() => {
+  try {
+    return fs.readFileSync(path.join(dist, "index.html"), "utf8");
+  } catch {
+    return ""; // dist not built yet (dev) — Vite serves the shell instead.
+  }
+})();
 // Any non-API GET under the base path → index.html (client routing).
-app.get(new RegExp(`^${BASE_PATH}(?!/api)(/.*)?$`), (_req, res) => {
-  res.sendFile(path.join(dist, "index.html"));
+app.get(new RegExp(`^${BASE_PATH}(?!/api)(/.*)?$`), async (req, res) => {
+  if (!indexHtml) return res.sendFile(path.join(dist, "index.html"));
+  const origin = `${req.protocol}://${req.get("host") ?? ""}`;
+  res.type("html").send(await renderShell(indexHtml, req.path, origin));
 });
 
 app.listen(PORT, () => {
