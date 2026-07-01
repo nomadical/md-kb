@@ -1,0 +1,50 @@
+# One-command run of the md-kb app container against a Supabase you already have
+# (Supabase Cloud, or a local `supabase start`). Copy .env.example to .env, fill
+# it in, then:
+#
+#   docker compose up --build
+#
+# The VITE_* values are BOTH baked into the SPA at build time and passed to the
+# server at runtime (the Node server also talks to Supabase). Server-only secrets
+# (service-role key, MCP token, AI keys) are runtime-only.
+#
+# This runs the app only — bring your own Supabase. For a zero-dependency local
+# stack, use `npm run setup` (Supabase CLI); for hosted, see docs/DEPLOY.md.
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_SITE_URL: ${VITE_SITE_URL:-}
+        VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
+        VITE_OAUTH_PROVIDERS: ${VITE_OAUTH_PROVIDERS:-}
+        VITE_ALLOW_SIGNUP: ${VITE_ALLOW_SIGNUP:-true}
+    ports:
+      - "${PORT:-8787}:8787"
+    environment:
+      # Runtime copies — the server reads these to reach Supabase under RLS.
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+      VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+      VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
+      VITE_SITE_URL: ${VITE_SITE_URL:-}
+      # Server-only secrets (never shipped to the browser).
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+      MCP_API_TOKEN: ${MCP_API_TOKEN:-}
+      # Optional "Ask the KB" provider (any OpenAI-compatible endpoint).
+      LLM_URL: ${LLM_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:8787'+(process.env.VITE_BASE_PATH||'/').replace(/\\/$/,'')+'/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
