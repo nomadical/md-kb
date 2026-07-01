@@ -8,13 +8,13 @@ or expose content directly.
 
 ## Endpoint
 
-Streamable-HTTP, served by the KB app:
+Streamable-HTTP, served by the app at `${BASE_PATH}/api/mcp`:
 
 ```
-https://node-services.<env>.skymind.com/knowledge-base/api/mcp
+https://<your-host><base-path>/api/mcp
 ```
 
-(Local dev: `http://localhost:3000/knowledge-base/api/mcp`.)
+(Local dev with the default base path: `http://localhost:8787/api/mcp`.)
 
 ## Tools
 
@@ -40,7 +40,3 @@ and read access (including unpublished drafts).
 2. URL: the endpoint above. Auth: **Bearer token** = your `MCP_API_TOKEN`.
 3. In a chat, ask Claude to draft an article; it will `search_kb_articles`
    first, then `create_draft_article`, and return the review URL.
-
-> Roadmap: once ADR-0002 (direct Keycloak→Supabase auth) lands, the connector
-> can pass a per-user Keycloak token instead of the shared bearer, attributing
-> drafts to the actual author and reusing RLS.
