@@ -1040,7 +1040,9 @@ begin
   if public.current_user_role() not in ('admin', 'editor') then
     raise exception 'Only an editor or admin can create articles' using errcode = 'check_violation';
   end if;
-  stamp := to_char(now(), 'YYYYMMDDHH24MISS');
+  -- Timestamp + short random suffix so rapid successive calls (e.g. a bulk
+  -- import loop) never collide on the articles_slug_active_idx unique index.
+  stamp := to_char(now(), 'YYYYMMDDHH24MISS') || '-' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 6);
   insert into public.articles (title, slug, content)
     values ('Untitled', 'untitled-' || stamp, '# Untitled' || E'\n\n')
     returning id into new_id;
