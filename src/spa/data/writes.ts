@@ -8,7 +8,7 @@ import {
 
 // SPA writes module (stage 4): typed client for the editorial mutations that
 // were Next server actions (src/app/admin/actions.ts). Each call POSTs to the
-// thin Express backend (stage 5) under /knowledge-base/api/admin/<name> with the
+// thin Express backend (stage 5) under `${BASE_PATH}/api/admin/<name>` with the
 // user's Supabase access token, so the backend performs the write under the
 // user's RLS *and* records the audit_log entry server-side (service role) —
 // preserving audit integrity, which a direct client→Supabase write can't.
@@ -43,7 +43,7 @@ export type TemplateInput = {
   tags: string[];
 };
 
-// import.meta.env.BASE_URL is "/knowledge-base/" (vite `base`).
+// import.meta.env.BASE_URL is the vite `base` (default "/"; e.g. "/kb/").
 const API_BASE = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/api/admin`;
 
 async function authHeaders(): Promise<Record<string, string>> {
