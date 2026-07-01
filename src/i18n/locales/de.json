@@ -221,7 +221,8 @@
         "branding": "Branding & Darstellung",
         "publishing": "Veröffentlichung & Prüfung",
         "languages": "Sprachen & Zugriff",
-        "editor": "Editor, KI & Analyse"
+        "editor": "Editor, KI & Analyse",
+        "importExport": "Import & Export"
       },
       "branding": {
         "siteName": "Seitenname",
@@ -252,6 +253,18 @@
         "feedback": "Feedback-Widget",
         "viewTracking": "Aufruf-Tracking",
         "searchLogging": "Protokollierung von Suchanfragen"
+      },
+      "importExport": {
+        "exportLabel": "Alle Artikel exportieren",
+        "exportHint": "Jeden aktiven Artikel als Markdown-Datei (mit Frontmatter) herunterladen, gebündelt als Zip.",
+        "export": "Zip exportieren",
+        "exporting": "Exportiere…",
+        "importLabel": "Markdown importieren",
+        "importHint": ".md-Dateien oder eine .zip. Jede wird zu einem privaten Entwurf, den du prüfen und veröffentlichen kannst.",
+        "import": "Dateien wählen…",
+        "importing": "Importiere…",
+        "result": "{{imported}} von {{total}} importiert.",
+        "failed": "{{count}} fehlgeschlagen"
       }
     },
     "templates": {
