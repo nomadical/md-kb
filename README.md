@@ -46,6 +46,19 @@ npm run db:migrate     # applies supabase/migrations.sql
 npm run db:seed        # optional demo content
 ```
 
+### Run with Docker
+
+To run the app container (SPA + API in one image) against any Supabase, copy
+`.env.example` to `.env`, fill it in, then:
+
+```bash
+docker compose up --build   # → http://localhost:8787
+```
+
+Bring your own Supabase (Cloud, or a local `supabase start`); apply
+`supabase/migrations.sql` to it once. See [docs/DEPLOY.md](docs/DEPLOY.md) for a
+hosted end-to-end walkthrough.
+
 ## Auth
 
 Email + password and magic-link work out of the box (configure SMTP in Supabase
