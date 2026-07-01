@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import { BASE_PATH } from "@/lib/config";
 import AppProviders from "@/spa/AppProviders";
 import { ProtectedRoute } from "@/spa/auth/ProtectedRoute";
 import NotFound from "@/spa/pages/NotFound";
@@ -26,8 +27,8 @@ const AnalyticsPage = lazy(() => import("@/spa/pages/admin/AnalyticsPage"));
 const AuditPage = lazy(() => import("@/spa/pages/admin/AuditPage"));
 const SettingsPage = lazy(() => import("@/spa/pages/admin/SettingsPage"));
 
-// Base path matches Next's BASE_PATH (/knowledge-base) so links/deep-links keep
-// working behind Traefik. Route tree mirrors src/app/** (public + admin).
+// The router basename must match how the SPA is served (Vite `base`,
+// configurable via VITE_BASE_PATH; default "/"), or deep-links 404.
 export const router = createBrowserRouter(
   [
     {
@@ -101,5 +102,5 @@ export const router = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/knowledge-base" },
+  { basename: BASE_PATH || "/" },
 );
