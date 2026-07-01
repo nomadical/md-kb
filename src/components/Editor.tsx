@@ -18,11 +18,8 @@ import { useTranslation } from "react-i18next";
 import type { ICommand, PreviewType } from "@uiw/react-md-editor";
 import { SOURCE_LANGUAGE, type Article } from "@/lib/types";
 import { slugify } from "@/lib/markdown";
-import { BASE_PATH as BP } from "@/lib/config";
 import { applyTemplate } from "@/lib/templates";
 import MarkdownView from "@/components/MarkdownView";
-import DiffView from "@/components/DiffView";
-import AccessBadges from "@/components/AccessBadges";
 import AccessRolePicker from "@/components/AccessRolePicker";
 import FolderPicker from "@/components/FolderPicker";
 import { ToastHost, useToast } from "@/components/ui/Toast";
@@ -44,6 +41,11 @@ import DraftControls from "@/components/editor/DraftControls";
 import LanguageVersionPicker, {
   type LanguageVersion,
 } from "@/components/editor/LanguageVersionPicker";
+import ReadOnlyArticleView from "@/components/editor/ReadOnlyArticleView";
+import TemplatePickerModal from "@/components/editor/TemplatePickerModal";
+import { Field, FloatingField, FIELD_INPUT } from "@/components/editor/fields";
+import { caretPos, wrapT, linkT } from "@/components/editor/editorText";
+import { useMediaUpload } from "@/components/editor/useMediaUpload";
 import { loadSplit, loadView, saveSplit, saveView } from "@/lib/editorStorage";
 import { useEditorState } from "@/components/editor/useEditorState";
 import { useAutosave } from "@/components/editor/useAutosave";
@@ -125,8 +127,6 @@ export default function Editor({
     setBaseline,
     applyDraft,
   } = useEditorState(article);
-  // Reviewer's read-only view: show the diff-since-last-published first.
-  const [showDiff, setShowDiff] = useState(true);
 
   // Editor layout, persisted across sessions/articles.
   const [previewMode, setPreviewMode] = useState<PreviewType>(() =>
@@ -142,7 +142,6 @@ export default function Editor({
   useEffect(() => saveView(previewMode), [previewMode]);
   useEffect(() => saveSplit(split), [split]);
 
-  const [uploading, setUploading] = useState(false);
   const [templatePicker, setTemplatePicker] = useState(false);
   // Custom right-click menu: position + the selection captured at click time.
   const [ctxMenu, setCtxMenu] = useState<{
@@ -219,55 +218,13 @@ export default function Editor({
     [onLanguageChange, language, dirty, canEdit, save],
   );
 
-  // Upload an image to Supabase Storage (via /api/upload) and return its URL.
-  const uploadImage = useCallback(async (file: File): Promise<string> => {
-    const body = new FormData();
-    body.append("file", file);
-    const res = await fetch(`${BP}/api/upload`, { method: "POST", body });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.error ?? `Upload failed (${res.status})`);
-    return json.url as string;
-  }, []);
-
-  // Upload dropped/pasted/picked media and insert at `pos` (cursor): images and
-  // GIFs as markdown image links, videos as a <video> tag (rendered via the
-  // media-aware sanitizer).
-  const insertImages = useCallback(
-    async (files: FileList | File[], pos?: { start: number; end: number }) => {
-      const media = Array.from(files).filter(
-        (f) => f.type.startsWith("image/") || f.type.startsWith("video/"),
-      );
-      if (media.length === 0) return;
-      clearError();
-      setUploading(true);
-      try {
-        const urls = await Promise.all(media.map(uploadImage));
-        const md = urls
-          .map((u, i) =>
-            media[i].type.startsWith("video/")
-              ? `<video src="${u}" controls width="640" style="max-width:100%"></video>`
-              : `![${media[i].name.replace(/\.[^.]+$/, "")}](${u})`,
-          )
-          .join("\n");
-        setContent((prev) => {
-          const start = pos?.start ?? prev.length;
-          const end = pos?.end ?? start;
-          return prev.slice(0, start) + md + prev.slice(end);
-        });
-        pushToast(
-          "success",
-          media.length > 1
-            ? `${media.length} files uploaded`
-            : `${media[0].type.startsWith("video/") ? "Video" : "Image"} uploaded`,
-        );
-      } catch (e) {
-        pushToast("error", `Upload failed: ${(e as Error).message}`);
-      } finally {
-        setUploading(false);
-      }
-    },
-    [uploadImage, pushToast, clearError, setContent],
-  );
+  // Upload dropped/pasted/picked media and insert at the caret (images/GIFs as
+  // markdown image links, videos as a <video> tag rendered via the sanitizer).
+  const { uploading, insertImages } = useMediaUpload({
+    clearError,
+    setContent,
+    pushToast,
+  });
 
   // Image-upload button inside the MDEditor toolbar (native placement). Clicking
   // it opens the file picker; the chosen image inserts at the captured caret.
@@ -365,20 +322,6 @@ export default function Editor({
     setCtxMenu(null);
     const caretStart = start + (selStart ?? text.length);
     setSelectionSoon(caretStart, start + (selEnd ?? selStart ?? text.length));
-  };
-
-  // Wrap with markers; caret lands between them (empty selection) or around
-  // the wrapped text (so the next action/toggle still targets it).
-  const wrapT = (before: string, after = before) => (sel: string) => ({
-    text: `${before}${sel}${after}`,
-    selStart: before.length,
-    selEnd: before.length + sel.length,
-  });
-  // `[label](url)` with the `url` placeholder selected, ready to type.
-  const linkT = (sel: string) => {
-    const label = sel || "text";
-    const caret = `[${label}](`.length;
-    return { text: `[${label}](url)`, selStart: caret, selEnd: caret + 3 };
   };
 
   // Context-menu helpers operate on the right-click selection.
@@ -596,69 +539,18 @@ export default function Editor({
   // ---- Read-only view for reviewers / viewers ----------------------------
   if (!canEdit) {
     return (
-      <div className="flex h-full flex-col">
-        <div className="flex flex-wrap items-center gap-2 border-b border-ink-line bg-ink-panel px-4 py-2">
-          <h1 className="min-w-40 flex-1 truncate text-[15px] font-semibold">
-            {article.title}
-          </h1>
-          {onLanguageChange && (
-            <LanguageVersionPicker
-              language={language}
-              versions={languageVersions}
-              onSelect={handleLanguageSelect}
-            />
-          )}
-          {isTranslation || !articleDraftId ? (
-            <ReviewControls
-              articleId={article.id}
-              slug={article.slug}
-              initialStatus={article.status}
-              initialNote={article.review_note}
-              canEdit={false}
-              canReview={canReview}
-              language={language}
-            />
-          ) : (
-            <DraftControls
-              draftId={articleDraftId}
-              status={draftStatus ?? (article.status === "in_review" ? "in_review" : "draft")}
-              published={article.published}
-              slug={article.slug}
-              reviewNote={article.review_note}
-              canEdit={false}
-              canReview={canReview}
-              reviewing={reviewing}
-            />
-          )}
-        </div>
-        <div className="flex flex-wrap items-center gap-3 border-b border-ink-line px-4 py-2 text-[12px] text-ink-mut">
-          <span>{article.folder || "(root)"}</span>
-          {article.tags.length > 0 && <span>#{article.tags.join(" #")}</span>}
-          <AccessBadges roles={article.access_roles} />
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto px-8 py-6">
-          {canReview &&
-          article.status === "in_review" &&
-          reviewDiffBase != null ? (
-            <div className="space-y-4">
-              <button
-                type="button"
-                onClick={() => setShowDiff((v) => !v)}
-                className="rounded border border-ink-line px-2 py-0.5 text-[12px] text-ink-mut hover:border-ink-accent hover:text-ink-accent"
-              >
-                {showDiff ? "View rendered article" : "View changes"}
-              </button>
-              {showDiff ? (
-                <DiffView base={reviewDiffBase} next={article.content} />
-              ) : (
-                <MarkdownView source={article.content} />
-              )}
-            </div>
-          ) : (
-            <MarkdownView source={article.content} />
-          )}
-        </div>
-      </div>
+      <ReadOnlyArticleView
+        article={article}
+        language={language}
+        languageVersions={languageVersions}
+        onLanguageSelect={onLanguageChange ? handleLanguageSelect : undefined}
+        isTranslation={isTranslation}
+        articleDraftId={articleDraftId}
+        draftStatus={draftStatus}
+        canReview={canReview}
+        reviewDiffBase={reviewDiffBase}
+        reviewing={reviewing}
+      />
     );
   }
 
@@ -1096,84 +988,12 @@ export default function Editor({
       )}
 
       {templatePicker && (
-        <div
-          className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[18vh]"
-          onClick={() => setTemplatePicker(false)}
-        >
-          <div className="kb-fade absolute inset-0 bg-black/40" />
-          <div
-            className="kb-pop relative w-full max-w-md overflow-hidden rounded-xl border border-ink-line bg-ink-panel shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="border-b border-ink-line px-4 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-ink-mut">
-              Insert template
-            </div>
-            <ul className="max-h-80 overflow-y-auto">
-              {templates.map((t) => (
-                <li key={t.id}>
-                  <button
-                    onClick={() => insertTemplate(t.content)}
-                    className="block w-full px-4 py-2.5 text-left text-[14px] transition-colors hover:bg-ink-accent/10 hover:text-ink-accent"
-                  >
-                    {t.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <TemplatePickerModal
+          templates={templates}
+          onPick={insertTemplate}
+          onClose={() => setTemplatePicker(false)}
+        />
       )}
-    </div>
-  );
-}
-
-// Resolve the caret position from a paste/drop whose target is the editor's
-// <textarea>. Returns undefined (append) if we can't find it.
-function caretPos(
-  target: EventTarget | null,
-): { start: number; end: number } | undefined {
-  if (target instanceof HTMLTextAreaElement) {
-    return { start: target.selectionStart, end: target.selectionEnd };
-  }
-  return undefined;
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="flex items-center gap-1.5 text-ink-mut">
-      <span>{label}</span>
-      {children}
-    </label>
-  );
-}
-
-// Shared classes for the metadata inputs + the pickers' triggers, so the
-// floating-label boxes are all the same height/shape.
-export const FIELD_INPUT =
-  "rounded-md border border-ink-line bg-ink-panel px-2.5 pb-1 pt-1.5 text-[12px] text-ink-fg outline-none transition-colors focus:border-ink-accent";
-
-/** MUI-style outlined field: the label floats onto the box's top border so it
- *  reads as part of the input and frees the horizontal space a separate label
- *  column used. Wrap any bordered control (input / picker) sharing FIELD_INPUT. */
-function FloatingField({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="group relative">
-      <span className="pointer-events-none absolute -top-1.5 left-2 z-10 rounded bg-ink-panel px-1 text-[10px] font-medium leading-none text-ink-mut transition-colors group-focus-within:text-ink-accent">
-        {label}
-      </span>
-      {children}
     </div>
   );
 }
