@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaRegCopy, FaDownload, FaCheck } from "react-icons/fa6";
+import {
+  FaRegCopy,
+  FaDownload,
+  FaCheck,
+  FaBookmark,
+  FaRegBookmark,
+} from "react-icons/fa6";
+import { toggleSaved, useIsSaved } from "@/lib/savedArticles";
 
 const BTN =
   "inline-flex items-center gap-1.5 rounded-md border border-ink-line px-2 py-1 text-[12px] text-ink-mut transition-colors hover:border-ink-accent hover:text-ink-accent";
 
-/** Reader actions: copy the article's markdown source, or download it as .md. */
+/** Reader actions: bookmark, copy the article's markdown source, or download it. */
 export default function ArticleActions({
   slug,
   content,
@@ -15,6 +22,7 @@ export default function ArticleActions({
 }) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const saved = useIsSaved(slug);
 
   async function copy() {
     try {
@@ -38,6 +46,15 @@ export default function ArticleActions({
 
   return (
     <div className="flex shrink-0 items-center gap-2">
+      <button
+        type="button"
+        onClick={() => toggleSaved(slug)}
+        aria-pressed={saved}
+        className={saved ? `${BTN} border-ink-accent text-ink-accent` : BTN}
+      >
+        {saved ? <FaBookmark /> : <FaRegBookmark />}
+        {saved ? t("reader.saved") : t("reader.save")}
+      </button>
       <button type="button" onClick={copy} className={BTN}>
         {copied ? (
           <FaCheck className="text-emerald-600" />

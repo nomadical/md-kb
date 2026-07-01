@@ -31,6 +31,7 @@
     "askKb": "Ask the KB",
     "browse": "Browse",
     "browseAllArticles": "Browse all articles",
+    "saved": "Saved",
     "home": "Home",
     "editor": "Editor",
     "website": "Website",
@@ -127,6 +128,8 @@
     "copyMarkdown": "Copy markdown",
     "copied": "Copied",
     "download": "Download",
+    "save": "Save",
+    "saved": "Saved",
     "feedback": {
       "question": "Was this helpful?",
       "yes": "Yes",
@@ -136,6 +139,11 @@
       "placeholder": "Optional: tell us how to improve this article",
       "send": "Send feedback"
     }
+  },
+  "saved": {
+    "title": "Saved articles",
+    "count": "{{count}} saved",
+    "empty": "No saved articles yet. Use the bookmark button on an article to save it here."
   },
   "editor": {
     "title": "Title",

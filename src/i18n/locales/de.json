@@ -31,6 +31,7 @@
     "askKb": "Wissensdatenbank fragen",
     "browse": "Durchsuchen",
     "browseAllArticles": "Alle Artikel durchsuchen",
+    "saved": "Gespeichert",
     "home": "Startseite",
     "editor": "Editor",
     "website": "Website",
@@ -127,6 +128,8 @@
     "copyMarkdown": "Markdown kopieren",
     "copied": "Kopiert",
     "download": "Herunterladen",
+    "save": "Speichern",
+    "saved": "Gespeichert",
     "feedback": {
       "question": "War das hilfreich?",
       "yes": "Ja",
@@ -136,6 +139,11 @@
       "placeholder": "Optional: Sag uns, wie wir diesen Artikel verbessern können",
       "send": "Feedback senden"
     }
+  },
+  "saved": {
+    "title": "Gespeicherte Artikel",
+    "count": "{{count}} gespeichert",
+    "empty": "Noch keine gespeicherten Artikel. Nutze die Lesezeichen-Schaltfläche eines Artikels, um ihn hier zu speichern."
   },
   "editor": {
     "title": "Titel",
