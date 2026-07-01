@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import Link from "@/components/ui/AppLink";
-import { FaLayerGroup } from "react-icons/fa6";
+import { FaLayerGroup, FaBookmark } from "react-icons/fa6";
 import ArticleTree from "@/components/ArticleTree";
+import { useSavedSlugs } from "@/lib/savedArticles";
 import type { ArticleMeta } from "@/lib/types";
 
 /** Public KB explorer contents: "browse all" link + the article tree. The
@@ -16,6 +17,7 @@ export default function PublicSidebar({
   loading?: boolean;
 }) {
   const { t } = useTranslation();
+  const savedCount = useSavedSlugs().length;
 
   // While the list loads, a skeleton (not an empty tree) so the sidebar never
   // flashes "no articles".
@@ -41,6 +43,17 @@ export default function PublicSidebar({
       >
         <FaLayerGroup /> {t("nav.browseAllArticles")}
       </Link>
+      {savedCount > 0 && (
+        <Link
+          href="/saved"
+          className="flex items-center gap-2 border-b border-ink-line px-4 py-2.5 text-[13px] font-medium text-ink-mut hover:text-ink-accent"
+        >
+          <FaBookmark /> {t("nav.saved")}
+          <span className="ml-auto rounded-full bg-ink-accent/10 px-1.5 text-[11px] text-ink-accent">
+            {savedCount}
+          </span>
+        </Link>
+      )}
       <div className="min-h-0 flex-1 overflow-y-auto">{tree}</div>
     </>
   );

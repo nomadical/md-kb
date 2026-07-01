@@ -9,6 +9,7 @@ import PublicLayout from "@/spa/pages/public/PublicLayout";
 import HomePage from "@/spa/pages/public/HomePage";
 import KbBrowsePage from "@/spa/pages/public/KbBrowsePage";
 import ContextPage from "@/spa/pages/public/ContextPage";
+import SavedPage from "@/spa/pages/public/SavedPage";
 
 // Lazily loaded: the markdown-heavy article view and the whole admin
 // subtree (incl. the editor) — keeps them out of the initial public bundle.
@@ -40,6 +41,7 @@ export const router = createBrowserRouter(
             { path: "kb", element: <KbBrowsePage /> },
             { path: "kb/:slug", element: <ArticlePage /> },
             { path: "c/:slug", element: <ContextPage /> },
+            { path: "saved", element: <SavedPage /> },
           ],
         },
         { path: "login", element: <LoginPage /> },
