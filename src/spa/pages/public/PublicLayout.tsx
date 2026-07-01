@@ -37,7 +37,11 @@ export default function PublicLayout() {
       mode="public"
       sidebar={<PublicSidebar articles={list} loading={loading} />}
     >
-      <main className="relative min-w-0 flex-1 overflow-y-auto" id="main-scroll">
+      <main
+        className="relative min-w-0 flex-1 overflow-y-auto focus:outline-none"
+        id="main-scroll"
+        tabIndex={-1}
+      >
         <div className="flex min-h-full flex-col">
           <div className="mx-auto w-full max-w-[1760px] flex-1 px-5 py-8 sm:px-8 sm:py-10">
             <Outlet

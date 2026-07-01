@@ -126,7 +126,11 @@ export default function AdminLayout() {
       {/* Scrolls the content pages (audit/users/trash/…). The editor fills
           h-full and manages its own internal scroll, so it never overflows
           this and no page-level scrollbar appears for it. */}
-      <main className="min-w-0 flex-1 overflow-y-auto">
+      <main
+        className="min-w-0 flex-1 overflow-y-auto focus:outline-none"
+        id="main-scroll"
+        tabIndex={-1}
+      >
         <Outlet />
       </main>
       <CommandPalette role={role} />

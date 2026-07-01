@@ -62,6 +62,14 @@ export default function AppShell({
 
   return (
     <div className="flex h-screen">
+      {/* Keyboard/AT skip link: first focusable element, jumps past the chrome
+          to the page's <main id="main-scroll">. Hidden until focused. */}
+      <a
+        href="#main-scroll"
+        className="sr-only rounded-md bg-ink-accent px-3 py-2 text-[13px] font-medium text-white focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60]"
+      >
+        {t("nav.skipToContent")}
+      </a>
       {/* full-height desktop explorer rail. Width animates 0↔18rem; the inner
           column keeps its full width and is clipped by the rail's overflow, so
           it slides rather than reflowing. `inert` drops it from tab/AT order
