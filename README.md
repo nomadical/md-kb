@@ -14,6 +14,11 @@ write them in an Obsidian-style split editor with live preview.
   access-role tags for gated content.
 - **Admin Settings** — branding, languages, publishing policy, feature flags —
   all configurable in-app, no redeploy.
+- **Search** — Postgres full-text + fuzzy matching, with matched terms
+  highlighted; readers can bookmark articles for a personal "Saved" list.
+- **Bulk import/export** — round-trip your content as frontmatter Markdown (zip).
+- **SEO** — `robots.txt`, `sitemap.xml`, and server-rendered per-article
+  OpenGraph/Twitter tags for link previews.
 - **Optional AI ("Ask the KB")** — pgvector RAG against any OpenAI-compatible
   endpoint (off by default).
 
