@@ -50,7 +50,10 @@
     "openSidebar": "Navigation öffnen",
     "collapseSidebar": "Navigation einklappen",
     "expandSidebar": "Navigation ausklappen",
-    "account": "Konto"
+    "account": "Konto",
+    "viewSite": "Website ansehen",
+    "openEditor": "Editor öffnen",
+    "suggestions": "Vorschläge"
   },
   "home": {
     "heroTitle": "Wie können wir helfen?",
@@ -262,7 +265,8 @@
         "askAi": "Wissensdatenbank fragen (KI)",
         "feedback": "Feedback-Widget",
         "viewTracking": "Aufruf-Tracking",
-        "searchLogging": "Protokollierung von Suchanfragen"
+        "searchLogging": "Protokollierung von Suchanfragen",
+        "suggestEdits": "Änderungen vorschlagen (Fehler melden)"
       },
       "importExport": {
         "exportLabel": "Alle Artikel exportieren",
@@ -359,6 +363,59 @@
       "tooLarge": "Dieser Artikel ist zu groß für einen Inline-Vergleich — öffne den Versionsverlauf zum Vergleichen.",
       "noChanges": "Keine inhaltlichen Änderungen seit der letzten veröffentlichten Version.",
       "sinceLastPublished": "seit der letzten Veröffentlichung"
+    },
+    "suggestions": {
+      "subtitle": "Von Lesern eingereichte Korrekturen und Meldungen.",
+      "refresh": "Aktualisieren",
+      "empty": "Keine Vorschläge vorhanden.",
+      "markResolved": "Erledigt",
+      "dismiss": "Verwerfen",
+      "reopen": "Wieder öffnen",
+      "tabs": {
+        "open": "Offen",
+        "resolved": "Erledigt",
+        "dismissed": "Verworfen",
+        "all": "Alle"
+      }
     }
+  },
+  "appearance": {
+    "title": "Darstellung",
+    "short": "Aa",
+    "reset": "Zurücksetzen",
+    "size": {
+      "label": "Textgröße",
+      "sm": "Klein",
+      "base": "Standard",
+      "lg": "Groß",
+      "xl": "Sehr groß"
+    },
+    "width": {
+      "label": "Breite",
+      "standard": "Standard",
+      "wide": "Breit"
+    },
+    "font": {
+      "label": "Schriftart",
+      "sans": "Sans",
+      "serif": "Serif",
+      "dyslexic": "Lesbar"
+    },
+    "spacing": {
+      "label": "Zeilenabstand",
+      "normal": "Normal",
+      "relaxed": "Weit"
+    }
+  },
+  "suggest": {
+    "button": "Änderung vorschlagen",
+    "hint": "Fehler entdeckt? Text markieren, um eine Änderung vorzuschlagen (oder Strg/⌘+Enter).",
+    "title": "Änderung vorschlagen",
+    "suggestionLabel": "Ihr Vorschlag",
+    "suggestionPlaceholder": "Beschreiben Sie den Fehler oder die Korrektur…",
+    "emailLabel": "E-Mail (optional)",
+    "emailPlaceholder": "Für eventuelle Rückfragen",
+    "send": "Vorschlag senden",
+    "thanks": "Vielen Dank! Ihr Vorschlag wurde an unsere Redaktion gesendet."
   }
 }

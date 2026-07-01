@@ -24,6 +24,7 @@ const TemplatesPage = lazy(() => import("@/spa/pages/admin/TemplatesPage"));
 const TrashPage = lazy(() => import("@/spa/pages/admin/TrashPage"));
 const UsersPage = lazy(() => import("@/spa/pages/admin/UsersPage"));
 const AnalyticsPage = lazy(() => import("@/spa/pages/admin/AnalyticsPage"));
+const SuggestionsPage = lazy(() => import("@/spa/pages/admin/SuggestionsPage"));
 const AuditPage = lazy(() => import("@/spa/pages/admin/AuditPage"));
 const SettingsPage = lazy(() => import("@/spa/pages/admin/SettingsPage"));
 
@@ -81,6 +82,7 @@ export const router = createBrowserRouter(
                   children: [
                     { path: "admin/templates", element: <TemplatesPage /> },
                     { path: "admin/analytics", element: <AnalyticsPage /> },
+                    { path: "admin/suggestions", element: <SuggestionsPage /> },
                   ],
                 },
                 // admin only

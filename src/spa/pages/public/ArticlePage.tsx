@@ -10,6 +10,7 @@ import AccessBadges from "@/components/AccessBadges";
 import ArticleActions from "@/components/ArticleActions";
 import ArticleToc from "@/components/ArticleToc";
 import ArticleEngagement from "@/components/ArticleEngagement";
+import SuggestEdit from "@/components/SuggestEdit";
 import { useArticle } from "@/spa/data/articles";
 import { useSettings } from "@/spa/data/settings";
 import type { PublicOutletContext } from "@/spa/pages/public/PublicLayout";
@@ -26,7 +27,8 @@ export default function ArticlePage() {
     language,
   );
   const { articles } = useOutletContext<PublicOutletContext>();
-  const { tagsEnabled, feedbackWidget, fallbackToSource, siteName } = useSettings();
+  const { tagsEnabled, feedbackWidget, suggestEdits, fallbackToSource, siteName } =
+    useSettings();
 
   useEffect(() => {
     if (article) document.title = `${article.title} · ${siteName}`;
@@ -118,9 +120,13 @@ export default function ArticlePage() {
 
         {!unavailable && (
           <>
-            <div id="article-content">
+            <div id="article-content" className="article-reading">
               <MarkdownView source={body} />
             </div>
+
+            {suggestEdits && (
+              <SuggestEdit articleId={article.id} title={article.title} />
+            )}
 
             {feedbackWidget && <ArticleEngagement articleId={article.id} />}
           </>

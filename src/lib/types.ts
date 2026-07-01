@@ -219,6 +219,8 @@ export type AppSettings = {
   tagsEnabled: boolean;
   askAiEnabled: boolean;
   feedbackWidget: boolean;
+  /** Reader "suggest an edit / report a mistake" control on articles. */
+  suggestEdits: boolean;
   viewTracking: boolean;
   searchLogging: boolean;
 };
@@ -239,6 +241,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   tagsEnabled: true,
   askAiEnabled: true,
   feedbackWidget: true,
+  suggestEdits: true,
   viewTracking: true,
   searchLogging: true,
 };

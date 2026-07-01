@@ -358,3 +358,57 @@ export async function fetchAnalytics(): Promise<AnalyticsRaw> {
     searchClicks: (searchClicks.data ?? []) as AnalyticsRaw["searchClicks"],
   };
 }
+
+// ---- reader-submitted suggestions ("report a mistake") -------------------
+
+export type SuggestionStatus = "open" | "resolved" | "dismissed";
+
+export type SuggestionRow = {
+  id: string;
+  article_id: string | null;
+  excerpt: string | null;
+  suggestion: string;
+  email: string | null;
+  url: string | null;
+  status: SuggestionStatus;
+  created_at: string;
+  /** Denormalised for the list; joined from the articles row. */
+  article_title: string | null;
+  article_slug: string | null;
+};
+
+/** All reader suggestions, newest first, with their article title/slug. */
+export async function fetchSuggestions(): Promise<SuggestionRow[]> {
+  const { data } = await createClient()
+    .from("article_suggestions")
+    .select(
+      "id,article_id,excerpt,suggestion,email,url,status,created_at,articles(title,slug)",
+    )
+    .order("created_at", { ascending: false })
+    .limit(2000);
+  // The embedded `articles` relation comes back as an array from PostgREST even
+  // though article_id is a to-one FK; normalise to the single joined row.
+  type ArticleJoin = { title: string | null; slug: string | null };
+  type Raw = Omit<SuggestionRow, "article_title" | "article_slug"> & {
+    articles: ArticleJoin | ArticleJoin[] | null;
+  };
+  return ((data ?? []) as Raw[]).map(({ articles, ...s }) => {
+    const joined = Array.isArray(articles) ? articles[0] : articles;
+    return {
+      ...s,
+      article_title: joined?.title ?? null,
+      article_slug: joined?.slug ?? null,
+    };
+  });
+}
+
+/** Move a suggestion through the triage states. */
+export async function updateSuggestionStatus(
+  id: string,
+  status: SuggestionStatus,
+): Promise<void> {
+  await createClient()
+    .from("article_suggestions")
+    .update({ status })
+    .eq("id", id);
+}

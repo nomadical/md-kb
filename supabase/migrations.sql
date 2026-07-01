@@ -1210,3 +1210,41 @@ begin
   return new;
 end;
 $$;
+
+-- ----------------------------------------------------------------------------
+-- Reader-submitted corrections ("suggest an edit / report a mistake"). Anyone
+-- may INSERT (the reader picks text and describes a fix); only staff may read
+-- and update the triage status. Powers /admin/suggestions.
+-- ----------------------------------------------------------------------------
+create table if not exists public.article_suggestions (
+  id          uuid primary key default gen_random_uuid(),
+  article_id  uuid references public.articles (id) on delete cascade,
+  excerpt     text,
+  suggestion  text not null,
+  email       text,
+  url         text,
+  status      text not null default 'open'
+              check (status in ('open', 'resolved', 'dismissed')),
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists suggestions_article_idx on public.article_suggestions (article_id);
+create index if not exists suggestions_status_idx  on public.article_suggestions (status);
+create index if not exists suggestions_created_idx on public.article_suggestions (created_at desc);
+
+alter table public.article_suggestions enable row level security;
+
+drop policy if exists "anyone inserts" on public.article_suggestions;
+create policy "anyone inserts" on public.article_suggestions
+  for insert to anon, authenticated with check (true);
+
+drop policy if exists "staff reads" on public.article_suggestions;
+create policy "staff reads" on public.article_suggestions
+  for select to authenticated
+  using (public.current_user_role() in ('admin', 'editor'));
+
+drop policy if exists "staff updates suggestions" on public.article_suggestions;
+create policy "staff updates suggestions" on public.article_suggestions
+  for update to authenticated
+  using (public.current_user_role() in ('admin', 'editor'))
+  with check (public.current_user_role() in ('admin', 'editor'));

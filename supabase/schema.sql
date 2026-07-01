@@ -482,7 +482,26 @@ create table if not exists public.search_result_clicks (
   created_at    timestamptz not null default now()
 );
 
+-- Reader-submitted corrections ("suggest an edit / report a mistake"). `excerpt`
+-- is the passage the reader had selected; `suggestion` is their proposed fix;
+-- `email` is optional (for follow-up); `url` is the path they were on. `status`
+-- drives the editor triage queue under /admin/suggestions.
+create table if not exists public.article_suggestions (
+  id          uuid primary key default gen_random_uuid(),
+  article_id  uuid references public.articles (id) on delete cascade,
+  excerpt     text,
+  suggestion  text not null,
+  email       text,
+  url         text,
+  status      text not null default 'open'
+              check (status in ('open', 'resolved', 'dismissed')),
+  created_at  timestamptz not null default now()
+);
+
 create index if not exists feedback_article_idx on public.article_feedback (article_id);
+create index if not exists suggestions_article_idx on public.article_suggestions (article_id);
+create index if not exists suggestions_status_idx  on public.article_suggestions (status);
+create index if not exists suggestions_created_idx on public.article_suggestions (created_at desc);
 create index if not exists views_article_idx     on public.article_views (article_id);
 create index if not exists views_created_idx      on public.article_views (created_at desc);
 create index if not exists search_created_idx      on public.search_queries (created_at desc);
@@ -490,6 +509,7 @@ create index if not exists search_clicks_article_idx on public.search_result_cli
 create index if not exists search_clicks_created_idx on public.search_result_clicks (created_at desc);
 
 alter table public.article_feedback     enable row level security;
+alter table public.article_suggestions   enable row level security;
 alter table public.article_views        enable row level security;
 alter table public.search_queries       enable row level security;
 alter table public.search_result_clicks enable row level security;
@@ -498,7 +518,7 @@ alter table public.search_result_clicks enable row level security;
 do $$
 declare t text;
 begin
-  foreach t in array array['article_feedback','article_views','search_queries','search_result_clicks']
+  foreach t in array array['article_feedback','article_suggestions','article_views','search_queries','search_result_clicks']
   loop
     execute format('drop policy if exists "anyone inserts" on public.%I', t);
     execute format(
@@ -508,6 +528,13 @@ begin
       'create policy "staff reads" on public.%I for select to authenticated using (public.current_user_role() in (''admin'',''editor''))', t);
   end loop;
 end $$;
+
+-- Suggestions also need staff to update the triage status (open/resolved/dismissed).
+drop policy if exists "staff updates suggestions" on public.article_suggestions;
+create policy "staff updates suggestions" on public.article_suggestions
+  for update to authenticated
+  using (public.current_user_role() in ('admin','editor'))
+  with check (public.current_user_role() in ('admin','editor'));
 
 -- App-wide page analytics (visits / recurring visitors / dwell time). Anonymous
 -- visitor_id lives in the browser's localStorage (no PII). Inserts via /api/track.

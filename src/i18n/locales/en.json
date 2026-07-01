@@ -50,7 +50,10 @@
     "openSidebar": "Open navigation",
     "collapseSidebar": "Collapse navigation",
     "expandSidebar": "Expand navigation",
-    "account": "Account"
+    "account": "Account",
+    "viewSite": "View site",
+    "openEditor": "Open editor",
+    "suggestions": "Suggestions"
   },
   "home": {
     "heroTitle": "How can we help?",
@@ -262,7 +265,8 @@
         "askAi": "Ask the KB (AI)",
         "feedback": "Feedback widget",
         "viewTracking": "View tracking",
-        "searchLogging": "Search-query logging"
+        "searchLogging": "Search-query logging",
+        "suggestEdits": "Suggest edits (report a mistake)"
       },
       "importExport": {
         "exportLabel": "Export all articles",
@@ -359,6 +363,59 @@
       "tooLarge": "This article is too large to diff inline — open the version history to compare.",
       "noChanges": "No content changes since the last published version.",
       "sinceLastPublished": "since last published"
+    },
+    "suggestions": {
+      "subtitle": "Reader-submitted corrections and reports.",
+      "refresh": "Refresh",
+      "empty": "No suggestions here.",
+      "markResolved": "Resolve",
+      "dismiss": "Dismiss",
+      "reopen": "Reopen",
+      "tabs": {
+        "open": "Open",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed",
+        "all": "All"
+      }
     }
+  },
+  "appearance": {
+    "title": "Appearance",
+    "short": "Aa",
+    "reset": "Reset",
+    "size": {
+      "label": "Text size",
+      "sm": "Small",
+      "base": "Standard",
+      "lg": "Large",
+      "xl": "Extra large"
+    },
+    "width": {
+      "label": "Width",
+      "standard": "Standard",
+      "wide": "Wide"
+    },
+    "font": {
+      "label": "Font",
+      "sans": "Sans",
+      "serif": "Serif",
+      "dyslexic": "Readable"
+    },
+    "spacing": {
+      "label": "Line spacing",
+      "normal": "Normal",
+      "relaxed": "Relaxed"
+    }
+  },
+  "suggest": {
+    "button": "Suggest an edit",
+    "hint": "See a mistake? Select any text to suggest an edit (or press Ctrl/⌘+Enter).",
+    "title": "Suggest an edit",
+    "suggestionLabel": "Your suggestion",
+    "suggestionPlaceholder": "Describe the mistake or the correction…",
+    "emailLabel": "Email (optional)",
+    "emailPlaceholder": "So we can follow up",
+    "send": "Send suggestion",
+    "thanks": "Thank you! Your suggestion has been sent to our editors."
   }
 }

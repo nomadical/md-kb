@@ -1,9 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { FaPenToSquare, FaEye, FaBars, FaAnglesRight } from "react-icons/fa6";
+import {
+  FaPenToSquare,
+  FaEye,
+  FaBars,
+  FaAnglesRight,
+  FaArrowRightLong,
+} from "react-icons/fa6";
 import Link from "@/components/ui/AppLink";
 import { useAuth } from "@/spa/auth/AuthProvider";
 import { useSettings } from "@/spa/data/settings";
 import ThemeToggle from "@/components/ThemeToggle";
+import AppearanceMenu from "@/components/AppearanceMenu";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import SignInButton from "@/components/SignInButton";
 import AccountMenu from "@/components/AccountMenu";
@@ -12,9 +19,11 @@ import AccountMenu from "@/components/AccountMenu";
 // they line up cleanly instead of reading as a row of mismatched pills.
 const CTRL =
   "inline-flex h-8 items-center gap-1.5 rounded-lg border border-ink-line px-2.5 text-[12px] font-medium text-ink-mut transition-colors hover:border-ink-accent hover:text-ink-accent";
-// Accent-tinted variant for the editor↔viewer switch, so the mode jump pops.
-const CTRL_ACCENT =
-  "inline-flex h-8 items-center gap-1.5 rounded-lg border border-transparent bg-ink-accent/10 px-2.5 text-[12px] font-medium text-ink-accent transition-colors hover:bg-ink-accent/15";
+// The editor↔viewer switch. A neutral, outlined action button (like the other
+// controls) with an accent leading icon and a trailing arrow, so it reads as
+// "go somewhere" rather than a highlighted "you are here" status pill.
+const SWITCH =
+  "group inline-flex h-8 items-center gap-1.5 rounded-lg border border-ink-line px-2.5 text-[12px] font-medium text-ink-fg transition-colors hover:border-ink-accent hover:text-ink-accent";
 // Borderless icon button for the explorer toggle on the left.
 const ICON_BTN =
   "inline-flex h-8 w-8 items-center justify-center rounded-lg text-ink-mut transition-colors hover:bg-black/[0.05] hover:text-ink-fg";
@@ -52,14 +61,16 @@ export default function AppBar({
 
   const switcher =
     mode === "admin" ? (
-      <Link href="/" className={CTRL_ACCENT} title={t("nav.website")}>
-        <FaEye className="text-[13px]" />
-        <span className="hidden sm:inline">{t("nav.website")}</span>
+      <Link href="/" className={SWITCH} title={t("nav.viewSite")}>
+        <FaEye className="text-[13px] text-ink-accent" />
+        <span className="hidden sm:inline">{t("nav.viewSite")}</span>
+        <FaArrowRightLong className="text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5" />
       </Link>
     ) : signedIn ? (
-      <Link href="/admin" className={CTRL_ACCENT} title={t("nav.editor")}>
-        <FaPenToSquare className="text-[13px]" />
-        <span className="hidden sm:inline">{t("nav.editor")}</span>
+      <Link href="/admin" className={SWITCH} title={t("nav.openEditor")}>
+        <FaPenToSquare className="text-[13px] text-ink-accent" />
+        <span className="hidden sm:inline">{t("nav.openEditor")}</span>
+        <FaArrowRightLong className="text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5" />
       </Link>
     ) : null;
 
@@ -103,6 +114,7 @@ export default function AppBar({
         )}
 
         <LanguageSwitcher className="h-8" />
+        <AppearanceMenu />
         <ThemeToggle compact />
 
         <Divider />

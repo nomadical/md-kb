@@ -246,6 +246,7 @@ export default function SettingsPage() {
           <Row label={t("admin.settings.editor.tags")}><Toggle checked={f.tagsEnabled} onChange={(v) => set("tagsEnabled", v)} /></Row>
           <Row label={t("admin.settings.editor.askAi")}><Toggle checked={f.askAiEnabled} onChange={(v) => set("askAiEnabled", v)} /></Row>
           <Row label={t("admin.settings.editor.feedback")}><Toggle checked={f.feedbackWidget} onChange={(v) => set("feedbackWidget", v)} /></Row>
+          <Row label={t("admin.settings.editor.suggestEdits")}><Toggle checked={f.suggestEdits} onChange={(v) => set("suggestEdits", v)} /></Row>
           <Row label={t("admin.settings.editor.viewTracking")}><Toggle checked={f.viewTracking} onChange={(v) => set("viewTracking", v)} /></Row>
           <Row label={t("admin.settings.editor.searchLogging")}><Toggle checked={f.searchLogging} onChange={(v) => set("searchLogging", v)} /></Row>
         </Section>

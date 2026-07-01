@@ -8,6 +8,7 @@ import {
   FaScroll,
   FaShapes,
   FaGear,
+  FaPenClip,
 } from "react-icons/fa6";
 import Link from "@/components/ui/AppLink";
 import { can, normalizeLanguage } from "@/lib/types";
@@ -74,6 +75,14 @@ export default function AdminLayout() {
           className="flex items-center gap-2 border-t border-ink-line px-4 py-2 text-[13px] text-ink-accent hover:bg-ink-accent/5"
         >
           <FaShapes /> {t("nav.templates")}
+        </Link>
+      )}
+      {can.edit(role) && (
+        <Link
+          href="/admin/suggestions"
+          className="flex items-center gap-2 border-t border-ink-line px-4 py-2 text-[13px] text-ink-accent hover:bg-ink-accent/5"
+        >
+          <FaPenClip /> {t("nav.suggestions")}
         </Link>
       )}
       <Link

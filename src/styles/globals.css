@@ -74,9 +74,83 @@ body {
   html {
     scroll-behavior: auto;
   }
-  .fade-up {
-    animation: none;
+  .fade-up,
+  *[class*="animate-"] {
+    animation: none !important;
   }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Accessibility: a clearly visible keyboard-focus ring on every interactive
+   element (mouse clicks stay ring-free via :focus-visible). */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid theme("colors.ink.accent");
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------------------------------------------------------------------------
+   Reader "Appearance" preferences (see ReadingPreferences.tsx). Scoped to the
+   article reading surface (`.article-reading`) so the editor's live preview is
+   never affected. Driven by `data-reading-*` on <html>.
+   --------------------------------------------------------------------------- */
+
+/* Reading measure: cap line length by default ("standard"); "wide" removes it. */
+.article-reading .prose {
+  max-width: 72ch;
+}
+:root[data-reading-width="wide"] .article-reading .prose {
+  max-width: none;
+}
+
+/* Text size / font / spacing are applied to the rendered markdown body. The
+   bundled preview engine (@uiw/react-markdown-preview) sets its own font-size,
+   line-height and font-family on `.wmde-markdown`, so we override there;
+   headings and list items are em-sized and scale relatively. */
+
+/* Text size */
+:root[data-reading-size="sm"] .article-reading .wmde-markdown {
+  font-size: 0.9rem;
+}
+:root[data-reading-size="lg"] .article-reading .wmde-markdown {
+  font-size: 1.15rem;
+}
+:root[data-reading-size="xl"] .article-reading .wmde-markdown {
+  font-size: 1.3rem;
+}
+
+/* Line spacing */
+:root[data-reading-spacing="relaxed"] .article-reading .wmde-markdown {
+  line-height: 2.1;
+}
+
+/* Font family. Also target the block elements the engine styles directly, so
+   the choice reaches paragraphs/headings/lists (code + pre stay monospace). */
+:root[data-reading-font="serif"] .article-reading .wmde-markdown,
+:root[data-reading-font="serif"]
+  .article-reading
+  .wmde-markdown
+  :is(h1, h2, h3, h4, h5, h6, p, li, blockquote, table) {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+/* Dyslexia-friendly: prefer Atkinson Hyperlegible / OpenDyslexic if the reader
+   has them installed, with generous tracking; falls back to a plain sans. */
+:root[data-reading-font="dyslexic"] .article-reading .wmde-markdown,
+:root[data-reading-font="dyslexic"]
+  .article-reading
+  .wmde-markdown
+  :is(h1, h2, h3, h4, h5, h6, p, li, blockquote, table) {
+  font-family: "Atkinson Hyperlegible", "OpenDyslexic", "Comic Sans MS",
+    ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.03em;
+  word-spacing: 0.08em;
 }
 
 /* Rendered markdown ("prose") styling — kept small & dependency-free. */
