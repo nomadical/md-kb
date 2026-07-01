@@ -221,7 +221,8 @@
         "branding": "Branding & appearance",
         "publishing": "Publishing & review",
         "languages": "Languages & access",
-        "editor": "Editor, AI & analytics"
+        "editor": "Editor, AI & analytics",
+        "importExport": "Import & export"
       },
       "branding": {
         "siteName": "Site name",
@@ -252,6 +253,18 @@
         "feedback": "Feedback widget",
         "viewTracking": "View tracking",
         "searchLogging": "Search-query logging"
+      },
+      "importExport": {
+        "exportLabel": "Export all articles",
+        "exportHint": "Download every live article as a Markdown file (with frontmatter), bundled as a zip.",
+        "export": "Export zip",
+        "exporting": "Exporting…",
+        "importLabel": "Import Markdown",
+        "importHint": ".md files or a .zip. Each becomes a private draft you can review and publish.",
+        "import": "Choose files…",
+        "importing": "Importing…",
+        "result": "Imported {{imported}} of {{total}}.",
+        "failed": "{{count}} failed"
       }
     },
     "templates": {

@@ -1,9 +1,14 @@
-import { useEffect, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { FaGear } from "react-icons/fa6";
 import { LANGUAGES, ROLES, type AppSettings, type Role } from "@/lib/types";
 import { fetchSettings } from "@/spa/data/settings";
-import { updateSettings } from "@/spa/data/writes";
+import {
+  exportArticles,
+  importArticles,
+  updateSettings,
+  type ImportResult,
+} from "@/spa/data/writes";
 import { useAsync } from "@/spa/data/useAsync";
 import Loading from "@/spa/pages/Loading";
 
@@ -45,6 +50,88 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 
 const INPUT =
   "rounded-md border border-ink-line bg-ink-bg px-2.5 py-1 text-[13px] outline-none focus:border-ink-accent";
+
+const BTN =
+  "rounded-md border border-ink-line px-3 py-1.5 text-[13px] font-medium hover:border-ink-accent hover:text-ink-accent disabled:opacity-60";
+
+/** Bulk import/export — self-contained (acts immediately, not part of Save). */
+function ImportExport() {
+  const { t } = useTranslation();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [exporting, setExporting] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [result, setResult] = useState<ImportResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const doExport = async () => {
+    setError(null);
+    setExporting(true);
+    try {
+      await exportArticles();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const doImport = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setError(null);
+    setResult(null);
+    setImporting(true);
+    try {
+      setResult(await importArticles([...files]));
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setImporting(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  return (
+    <Section title={t("admin.settings.sections.importExport")}>
+      <Row label={t("admin.settings.importExport.exportLabel")} hint={t("admin.settings.importExport.exportHint")}>
+        <button type="button" className={BTN} onClick={doExport} disabled={exporting}>
+          {exporting ? t("admin.settings.importExport.exporting") : t("admin.settings.importExport.export")}
+        </button>
+      </Row>
+      <Row label={t("admin.settings.importExport.importLabel")} hint={t("admin.settings.importExport.importHint")}>
+        <span>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".md,.zip"
+            multiple
+            className="hidden"
+            onChange={(e) => doImport(e.target.files)}
+          />
+          <button
+            type="button"
+            className={BTN}
+            onClick={() => fileRef.current?.click()}
+            disabled={importing}
+          >
+            {importing ? t("admin.settings.importExport.importing") : t("admin.settings.importExport.import")}
+          </button>
+        </span>
+      </Row>
+      {result && (
+        <p className="text-[13px] text-emerald-600">
+          {t("admin.settings.importExport.result", { imported: result.imported, total: result.total })}
+          {result.errors.length > 0 && (
+            <span className="text-amber-600">
+              {" "}
+              {t("admin.settings.importExport.failed", { count: result.errors.length })}
+            </span>
+          )}
+        </p>
+      )}
+      {error && <p className="text-[13px] text-red-600">{error}</p>}
+    </Section>
+  );
+}
 
 /** Admin-only app settings. */
 export default function SettingsPage() {
@@ -174,6 +261,10 @@ export default function SettingsPage() {
         </button>
         {saved && <span className="text-[13px] text-emerald-600">{t("admin.settings.saved")}</span>}
         {error && <span className="text-[13px] text-red-600">{error}</span>}
+      </div>
+
+      <div className="mt-8 border-t border-ink-line pt-6">
+        <ImportExport />
       </div>
     </div>
   );

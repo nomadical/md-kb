@@ -1,6 +1,13 @@
 import { Router, type Request } from "express";
+import multer from "multer";
+import JSZip from "jszip";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Role } from "../../src/lib/types";
+import {
+  articleToMarkdownFile,
+  parseMarkdownImport,
+  type ExportArticle,
+} from "../importExport";
 import {
   LANGUAGE_CODES,
   SOURCE_LANGUAGE,
@@ -466,6 +473,111 @@ route("updateSettings", async (req) => {
     .eq("id", 1);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
+});
+
+// ---- bulk export / import (admin) ----
+// Export: every live article as a frontmatter .md file, bundled into a zip
+// (organized by folder). Runs under the admin's RLS. Import: accepts .md files
+// and/or .zip archives; each doc becomes a NEW article seeded into the
+// importer's private draft (invisible until published), consistent with the
+// per-user-draft model.
+
+r.get("/export", async (req, res) => {
+  try {
+    const actor = await requireRole(req, "admin");
+    const { data, error } = await actor.supabase
+      .from("articles")
+      .select("slug,title,folder,tags,access_roles,context_keys,content,status")
+      .is("deleted_at", null)
+      .order("folder")
+      .order("slug");
+    if (error) throw new HttpError(500, error.message);
+
+    const zip = new JSZip();
+    for (const a of (data ?? []) as ExportArticle[]) {
+      const { path, contents } = articleToMarkdownFile(a);
+      zip.file(path, contents);
+    }
+    const buf = await zip.generateAsync({ type: "nodebuffer" });
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader("Content-Disposition", 'attachment; filename="md-kb-export.zip"');
+    res.send(buf);
+  } catch (e) {
+    if (e instanceof HttpError) res.status(e.status).json({ error: e.message });
+    else res.status(500).json({ error: (e as Error).message });
+  }
+});
+
+const uploadImport = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024, files: 500 },
+});
+
+r.post("/import", uploadImport.array("files"), async (req, res) => {
+  try {
+    const actor = await requireRole(req, "admin");
+    const files = (req.files as Express.Multer.File[]) ?? [];
+
+    // Expand: .zip → its .md entries; .md → itself.
+    const docs: { path: string; raw: string }[] = [];
+    for (const f of files) {
+      if (/\.zip$/i.test(f.originalname)) {
+        const zip = await JSZip.loadAsync(f.buffer);
+        for (const entry of Object.values(zip.files)) {
+          if (entry.dir || !/\.md$/i.test(entry.name)) continue;
+          docs.push({ path: entry.name, raw: await entry.async("string") });
+        }
+      } else if (/\.md$/i.test(f.originalname)) {
+        docs.push({ path: f.originalname, raw: f.buffer.toString("utf8") });
+      }
+    }
+    if (docs.length === 0)
+      throw new HttpError(400, "No .md files found in the upload.");
+
+    let imported = 0;
+    const errors: { path: string; error: string }[] = [];
+    for (const doc of docs) {
+      try {
+        const parsed = parseMarkdownImport(doc.path, doc.raw);
+        if (!parsed.content.trim()) {
+          errors.push({ path: doc.path, error: "Empty content." });
+          continue;
+        }
+        const { data: id, error: ce } = await actor.supabase.rpc("create_article");
+        if (ce) throw new Error(ce.message);
+        const { error: ue } = await actor.supabase
+          .from("article_drafts")
+          .update({
+            title: parsed.title,
+            slug: parsed.slug,
+            folder: parsed.folder,
+            content: parsed.content,
+            tags: parsed.tags,
+            access_roles: parsed.access_roles,
+            context_keys: parsed.context_keys,
+          })
+          .eq("article_id", id as string)
+          .eq("author_id", actor.userId)
+          .eq("language", SOURCE_LANGUAGE);
+        if (ue) throw new Error(ue.message);
+        await logAudit({
+          actor,
+          action: "article.create",
+          targetType: "article",
+          targetId: id as string,
+          summary: parsed.title,
+          metadata: { import: true, source: doc.path },
+        });
+        imported++;
+      } catch (e) {
+        errors.push({ path: doc.path, error: (e as Error).message });
+      }
+    }
+    res.json({ imported, total: docs.length, errors });
+  } catch (e) {
+    if (e instanceof HttpError) res.status(e.status).json({ error: e.message });
+    else res.status(500).json({ error: (e as Error).message });
+  }
 });
 
 export default r;

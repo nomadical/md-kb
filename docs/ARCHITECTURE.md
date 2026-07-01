@@ -9,7 +9,7 @@ how it's deployed. For deep dives see the linked ADRs.
 md-kb is a self-hosted, RLS-secured Markdown knowledge base. It serves public
 reading (full-text + fuzzy search, optional "Ask the KB") and an editorial
 workspace: per-user private drafts, optional mandatory review, version history,
-trash, an audit log, and an admin settings panel.
+trash, an audit log, bulk Markdown import/export, and an admin settings panel.
 
 The whole product is one deployable: a Vite/React single-page app plus a thin
 Express backend, talking to Supabase (Postgres + PostgREST + GoTrue + Storage).

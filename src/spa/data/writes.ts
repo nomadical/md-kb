@@ -155,6 +155,56 @@ export const deleteTemplate = (id: string) => callResult("deleteTemplate", { id 
 export const updateSettings = (settings: AppSettings) =>
   callResult("updateSettings", { settings });
 
+// ---- bulk import / export ----
+async function authToken(): Promise<string | undefined> {
+  const { data } = await createClient().auth.getSession();
+  return data.session?.access_token;
+}
+
+/** Download every live article as a zip of frontmatter markdown files. */
+export async function exportArticles(): Promise<void> {
+  const token = await authToken();
+  const res = await fetch(`${API_BASE}/export`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) throw new Error(`Export failed (${res.status})`);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "md-kb-export.zip";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+export type ImportResult = {
+  imported: number;
+  total: number;
+  errors: { path: string; error: string }[];
+};
+
+/** Upload .md files and/or .zip archives; each doc becomes a private draft. */
+export async function importArticles(files: File[]): Promise<ImportResult> {
+  const token = await authToken();
+  const form = new FormData();
+  for (const f of files) form.append("files", f);
+  const res = await fetch(`${API_BASE}/import`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  });
+  if (!res.ok) {
+    const msg = await res
+      .json()
+      .then((j: { error?: string }) => j?.error)
+      .catch(() => null);
+    throw new Error(msg ?? `Import failed (${res.status})`);
+  }
+  return (await res.json()) as ImportResult;
+}
+
 // ---- users ----
 export const setUserRole = (userId: string, role: Role) =>
   callResult("setUserRole", { userId, role });
