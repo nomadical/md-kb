@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaArrowUp } from "react-icons/fa6";
 
 /** "Back to top" pill that appears after scrolling ~1.5 screens. */
 export default function BackToTop({ scrollTargetId }: { scrollTargetId: string }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export default function BackToTop({ scrollTargetId }: { scrollTargetId: string }
           .getElementById(scrollTargetId)
           ?.scrollTo({ top: 0, behavior: "smooth" });
       }}
-      aria-label="Back to top"
+      aria-label={t("nav.backToTop")}
       className="fixed bottom-6 right-6 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-ink-line bg-ink-panel text-ink-mut shadow-md transition-all hover:-translate-y-0.5 hover:border-ink-accent hover:text-ink-accent"
     >
       <FaArrowUp />
