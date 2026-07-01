@@ -115,6 +115,13 @@ select:focus-visible,
    line-height and font-family on `.wmde-markdown`, so we override there;
    headings and list items are em-sized and scale relatively. */
 
+/* Default ("Sans"): match the app font (Inter) instead of the engine's own
+   -apple-system stack, so the reading body matches the rest of the UI. */
+.article-reading .wmde-markdown {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 /* Text size */
 :root[data-reading-size="sm"] .article-reading .wmde-markdown {
   font-size: 0.9rem;

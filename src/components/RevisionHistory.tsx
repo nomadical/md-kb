@@ -5,6 +5,7 @@ import { FaArrowRotateLeft } from "react-icons/fa6";
 import { restoreRevision, restoreTranslationRevision } from "@/spa/data/writes";
 import { SOURCE_LANGUAGE, isSourceLanguage } from "@/lib/types";
 import MarkdownView from "@/components/MarkdownView";
+import Badge from "@/components/ui/Badge";
 
 export type RevisionRow = {
   id: string;
@@ -69,9 +70,9 @@ export default function RevisionHistory({
                   <span className="block truncate text-[13px] font-medium">
                     #{r.revision} · {r.title}
                     {i === 0 && (
-                      <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                      <Badge tone="green" className="ml-2">
                         {t("admin.revisions.current")}
-                      </span>
+                      </Badge>
                     )}
                   </span>
                   <span className="block text-[12px] text-ink-mut">

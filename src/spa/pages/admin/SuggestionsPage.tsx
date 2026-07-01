@@ -9,12 +9,13 @@ import {
   type SuggestionStatus,
 } from "@/spa/data/admin";
 import Link from "@/components/ui/AppLink";
+import Badge, { type BadgeTone } from "@/components/ui/Badge";
 import Loading from "@/spa/pages/Loading";
 
-const STATUS_STYLE: Record<SuggestionStatus, string> = {
-  open: "bg-amber-100 text-amber-700",
-  resolved: "bg-emerald-100 text-emerald-700",
-  dismissed: "bg-slate-200 text-slate-600",
+const STATUS_TONE: Record<SuggestionStatus, BadgeTone> = {
+  open: "amber",
+  resolved: "green",
+  dismissed: "slate",
 };
 
 function fmt(ts: string): string {
@@ -114,11 +115,9 @@ export default function SuggestionsPage() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <span
-                    className={`inline-block rounded px-1.5 py-0.5 text-[11px] font-semibold ${STATUS_STYLE[r.status]}`}
-                  >
+                  <Badge tone={STATUS_TONE[r.status]}>
                     {t(`admin.suggestions.tabs.${r.status}`)}
-                  </span>
+                  </Badge>
                   <span className="ml-2 text-[12px] text-ink-mut">
                     {fmt(r.created_at)}
                   </span>

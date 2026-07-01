@@ -11,6 +11,7 @@ import ArticleActions from "@/components/ArticleActions";
 import ArticleToc from "@/components/ArticleToc";
 import ArticleEngagement from "@/components/ArticleEngagement";
 import SuggestEdit from "@/components/SuggestEdit";
+import Badge from "@/components/ui/Badge";
 import { useArticle } from "@/spa/data/articles";
 import { useSettings } from "@/spa/data/settings";
 import type { PublicOutletContext } from "@/spa/pages/public/PublicLayout";
@@ -90,11 +91,7 @@ export default function ArticlePage() {
               <span>
                 Updated {new Date(article.updated_at).toLocaleDateString()}
               </span>
-              {!article.published && (
-                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700">
-                  draft
-                </span>
-              )}
+              {!article.published && <Badge tone="amber">draft</Badge>}
               {tagsEnabled &&
                 article.tags.map((t) => (
                   <span key={t} className="rounded bg-black/5 px-1.5 py-0.5">

@@ -18,15 +18,16 @@ import { useAsync } from "@/spa/data/useAsync";
 import { fetchMyDrafts, fetchTemplatesLite } from "@/spa/data/admin";
 import AppShell from "@/components/AppShell";
 import ArticleTree from "@/components/ArticleTree";
-import RoleBadge from "@/components/RoleBadge";
 import CommandPalette from "@/components/CommandPalette";
 import NewArticleMenu from "@/components/NewArticleMenu";
+// RoleBadge/session were only used by the sidebar footer, now dropped as
+// redundant with the top-right AccountMenu.
 
 /** SPA port of src/app/admin/layout.tsx. Role is from the auth context; the
  *  route guard already restricts /admin to staff. */
 export default function AdminLayout() {
   const { t, i18n } = useTranslation();
-  const { session, role } = useAuth();
+  const { role } = useAuth();
   const { articles } = useArticles(
     true, // include drafts
     normalizeLanguage(i18n.resolvedLanguage ?? i18n.language),
@@ -123,10 +124,6 @@ export default function AdminLayout() {
           <FaGear /> {t("nav.settings")}
         </Link>
       )}
-      <div className="flex items-center justify-between gap-2 border-t border-ink-line px-4 py-2 text-[11px] text-ink-mut">
-        <span className="truncate">{session?.user.email}</span>
-        {role && <RoleBadge role={role} />}
-      </div>
     </>
   );
 

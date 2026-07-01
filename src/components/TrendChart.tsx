@@ -29,6 +29,9 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
   const line = pts.map((p) => `${p.px},${p.py}`).join(" ");
   const area = `${padL},${baseline} ${line} ${x(n - 1)},${baseline}`;
   const xPct = (i: number) => (x(i) / W) * 100;
+  // Percentages down the container for the two gridline labels (rendered as
+  // HTML below so preserveAspectRatio="none" can't stretch the glyphs).
+  const topPct = (v: number) => (y(v) / H) * 100;
 
   return (
     <div className="relative">
@@ -40,25 +43,16 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
       >
         {/* y-axis: 0 and max gridlines */}
         {[0, max].map((v) => (
-          <g key={v}>
-            <line
-              x1={padL}
-              x2={W - padR}
-              y1={y(v)}
-              y2={y(v)}
-              className="stroke-ink-line"
-              strokeWidth={1}
-              vectorEffect="non-scaling-stroke"
-            />
-            <text
-              x={padL - 6}
-              y={y(v) + 3}
-              textAnchor="end"
-              className="fill-ink-mut text-[9px]"
-            >
-              {v}
-            </text>
-          </g>
+          <line
+            key={v}
+            x1={padL}
+            x2={W - padR}
+            y1={y(v)}
+            y2={y(v)}
+            className="stroke-ink-line"
+            strokeWidth={1}
+            vectorEffect="non-scaling-stroke"
+          />
         ))}
 
         <polygon points={area} className="fill-ink-accent/15" />
@@ -81,21 +75,6 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
           />
         ))}
 
-        {/* date labels (every other day to avoid crowding) */}
-        {pts.map((p, i) =>
-          i % 2 === 0 ? (
-            <text
-              key={p.key}
-              x={p.px}
-              y={H - 6}
-              textAnchor="middle"
-              className="fill-ink-mut text-[9px]"
-            >
-              {p.label}
-            </text>
-          ) : null,
-        )}
-
         {/* invisible hover columns */}
         {pts.map((p, i) => (
           <rect
@@ -115,6 +94,35 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
           />
         ))}
       </svg>
+
+      {/* Axis + date labels as HTML overlays so they render at true aspect
+          ratio (the SVG above is stretched with preserveAspectRatio="none",
+          which distorts <text>). */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 text-[10px] leading-none text-ink-mut"
+      >
+        {[max, 0].map((v) => (
+          <span
+            key={v}
+            className="absolute left-0 -translate-y-1/2 tabular-nums"
+            style={{ top: `${topPct(v)}%` }}
+          >
+            {v}
+          </span>
+        ))}
+        {pts.map((p, i) =>
+          i % 2 === 0 ? (
+            <span
+              key={p.key}
+              className="absolute bottom-0 -translate-x-1/2 tabular-nums"
+              style={{ left: `${xPct(i)}%` }}
+            >
+              {p.label}
+            </span>
+          ) : null,
+        )}
+      </div>
 
       {hover !== null && (
         <div
