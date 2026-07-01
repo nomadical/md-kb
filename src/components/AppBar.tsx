@@ -1,11 +1,5 @@
 import { useTranslation } from "react-i18next";
-import {
-  FaPenToSquare,
-  FaEye,
-  FaBars,
-  FaAnglesRight,
-  FaArrowRightLong,
-} from "react-icons/fa6";
+import { FaPenToSquare, FaEye, FaBars, FaAnglesRight } from "react-icons/fa6";
 import Link from "@/components/ui/AppLink";
 import { useAuth } from "@/spa/auth/AuthProvider";
 import { useSettings } from "@/spa/data/settings";
@@ -19,11 +13,15 @@ import AccountMenu from "@/components/AccountMenu";
 // they line up cleanly instead of reading as a row of mismatched pills.
 const CTRL =
   "inline-flex h-8 items-center gap-1.5 rounded-lg border border-ink-line px-2.5 text-[12px] font-medium text-ink-mut transition-colors hover:border-ink-accent hover:text-ink-accent";
-// The editor↔viewer switch. A neutral, outlined action button (like the other
-// controls) with an accent leading icon and a trailing arrow, so it reads as
-// "go somewhere" rather than a highlighted "you are here" status pill.
-const SWITCH =
-  "group inline-flex h-8 items-center gap-1.5 rounded-lg border border-ink-line px-2.5 text-[12px] font-medium text-ink-fg transition-colors hover:border-ink-accent hover:text-ink-accent";
+// The website↔editor control is a real segmented switch: both modes are shown,
+// the current one is filled (the highlight legitimately means "you are here"),
+// and the other segment is a link that flips you over.
+const SEG_WRAP =
+  "inline-flex h-8 items-center rounded-lg border border-ink-line bg-ink-bg p-0.5";
+const SEG =
+  "inline-flex h-7 items-center gap-1.5 rounded-md px-2.5 text-[12px] font-medium transition-colors";
+const SEG_ON = "bg-ink-accent text-white";
+const SEG_OFF = "text-ink-mut hover:text-ink-accent";
 // Borderless icon button for the explorer toggle on the left.
 const ICON_BTN =
   "inline-flex h-8 w-8 items-center justify-center rounded-lg text-ink-mut transition-colors hover:bg-black/[0.05] hover:text-ink-fg";
@@ -59,19 +57,43 @@ export default function AppBar({
   const { siteName } = useSettings();
   const signedIn = !!session;
 
+  // Only shown to signed-in users (anonymous visitors have no editor). Segments:
+  // Website | Editor, current mode filled, the other links across.
+  const inAdmin = mode === "admin";
   const switcher =
-    mode === "admin" ? (
-      <Link href="/" className={SWITCH} title={t("nav.viewSite")}>
-        <FaEye className="text-[13px] text-ink-accent" />
-        <span className="hidden sm:inline">{t("nav.viewSite")}</span>
-        <FaArrowRightLong className="text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5" />
-      </Link>
-    ) : signedIn ? (
-      <Link href="/admin" className={SWITCH} title={t("nav.openEditor")}>
-        <FaPenToSquare className="text-[13px] text-ink-accent" />
-        <span className="hidden sm:inline">{t("nav.openEditor")}</span>
-        <FaArrowRightLong className="text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5" />
-      </Link>
+    inAdmin || signedIn ? (
+      <div
+        className={SEG_WRAP}
+        role="group"
+        aria-label={`${t("nav.website")} / ${t("nav.editor")}`}
+      >
+        {inAdmin ? (
+          <Link href="/" className={`${SEG} ${SEG_OFF}`} title={t("nav.viewSite")}>
+            <FaEye className="text-[13px]" />
+            <span className="hidden sm:inline">{t("nav.website")}</span>
+          </Link>
+        ) : (
+          <span className={`${SEG} ${SEG_ON}`} aria-current="page">
+            <FaEye className="text-[13px]" />
+            <span className="hidden sm:inline">{t("nav.website")}</span>
+          </span>
+        )}
+        {inAdmin ? (
+          <span className={`${SEG} ${SEG_ON}`} aria-current="page">
+            <FaPenToSquare className="text-[13px]" />
+            <span className="hidden sm:inline">{t("nav.editor")}</span>
+          </span>
+        ) : (
+          <Link
+            href="/admin"
+            className={`${SEG} ${SEG_OFF}`}
+            title={t("nav.openEditor")}
+          >
+            <FaPenToSquare className="text-[13px]" />
+            <span className="hidden sm:inline">{t("nav.editor")}</span>
+          </Link>
+        )}
+      </div>
     ) : null;
 
   return (

@@ -2,24 +2,41 @@ import { useTranslation } from "react-i18next";
 import { FaSun, FaMoon } from "react-icons/fa6";
 import { useTheme } from "./ThemeProvider";
 
-/** Toggles between light and dark, reflecting whatever is currently shown
- *  (which, before the first toggle, is the OS preference). (⇧⌘L also toggles.) */
+// Segmented Light | Dark switch: both options are shown, the active one is
+// filled, and clicking the other commits that theme (⇧⌘L still toggles).
+const WRAP =
+  "inline-flex h-8 items-center rounded-lg border border-ink-line bg-ink-bg p-0.5";
+const SEG =
+  "inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-[12px] font-medium transition-colors";
+const ON = "bg-ink-accent text-white";
+const OFF = "text-ink-mut hover:text-ink-accent";
+
+/** Explicit light/dark switch, reflecting whatever is currently shown (before
+ *  the first choice, that's the OS preference). */
 export default function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const { t } = useTranslation();
-  const { resolved, toggle } = useTheme();
-  const Icon = resolved === "dark" ? FaMoon : FaSun;
-  const label = t(`theme.${resolved}`);
-  const next = t(resolved === "dark" ? "theme.switchToLight" : "theme.switchToDark");
+  const { resolved, setTheme } = useTheme();
 
   return (
-    <button
-      onClick={toggle}
-      title={`${t("nav.theme")}: ${label} — ${next} (⇧⌘L)`}
-      aria-label={`${t("nav.theme")}: ${label}. ${next}`}
-      className="inline-flex h-8 items-center gap-2 rounded-lg border border-ink-line px-2.5 text-[12px] text-ink-mut transition-colors hover:border-ink-accent hover:text-ink-accent"
-    >
-      <Icon className="text-[13px]" />
-      {!compact && <span>{label}</span>}
-    </button>
+    <div className={WRAP} role="group" aria-label={t("nav.theme")}>
+      <button
+        onClick={() => setTheme("light")}
+        aria-pressed={resolved === "light"}
+        title={t("theme.switchToLight")}
+        className={`${SEG} ${resolved === "light" ? ON : OFF}`}
+      >
+        <FaSun className="text-[13px]" />
+        {!compact && <span>{t("theme.light")}</span>}
+      </button>
+      <button
+        onClick={() => setTheme("dark")}
+        aria-pressed={resolved === "dark"}
+        title={t("theme.switchToDark")}
+        className={`${SEG} ${resolved === "dark" ? ON : OFF}`}
+      >
+        <FaMoon className="text-[13px]" />
+        {!compact && <span>{t("theme.dark")}</span>}
+      </button>
+    </div>
   );
 }
