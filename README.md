@@ -7,6 +7,10 @@ An open-source, plug-and-play knowledge base built on **Supabase + Vite/React +
 a thin Express API**. Public visitors read published articles; signed-in staff
 write them in an Obsidian-style split editor with live preview.
 
+**[Try the demo →](https://nomadical.github.io/md-kb/)** It runs entirely in
+your browser (signed in as an admin, nothing saved past the tab), built from
+this repo with `VITE_DEMO=true` — see `src/demo/`.
+
 - **Per-user private drafts** — your edits are private until reviewed & published.
 - **Review-gated publishing** — submit → review → publish (configurable).
 - **Published-only version history**, trash/restore, audit log.

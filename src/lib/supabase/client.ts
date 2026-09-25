@@ -1,6 +1,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "@/lib/config";
+import { createDemoClient } from "@/demo/client";
 
 let client: SupabaseClient | undefined;
 
@@ -16,6 +17,8 @@ let client: SupabaseClient | undefined;
  * Keycloak OAuth and the dev magic-link, which both return to /auth/callback).
  */
 export function createClient(): SupabaseClient {
+  // Static demo build: an in-memory stand-in (Vite drops this branch otherwise).
+  if (import.meta.env.VITE_DEMO === "true") return (client ??= createDemoClient());
   client ??= createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: { detectSessionInUrl: false },
   });
