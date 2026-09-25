@@ -1,0 +1,50 @@
+name: demo
+
+# Static demo on GitHub Pages: the SPA built with VITE_DEMO=true, so data lives
+# in the browser (src/demo) and there is no Supabase or API server behind it.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Build demo
+        run: npm run build -- --outDir dist-demo
+        env:
+          VITE_DEMO: "true"
+          VITE_BASE_PATH: /md-kb/
+          VITE_ALLOW_SIGNUP: "false"
+      # GitHub Pages has no SPA fallback; serve the app for deep links too.
+      - run: cp dist-demo/index.html dist-demo/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-demo
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

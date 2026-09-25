@@ -8,6 +8,8 @@ interface ImportMetaEnv {
   readonly VITE_OAUTH_PROVIDERS?: string;
   /** "false" hides the in-app sign-up option (curated/demo instances). */
   readonly VITE_ALLOW_SIGNUP?: string;
+  /** "true" builds the static demo: in-memory data, no Supabase or API server. */
+  readonly VITE_DEMO?: string;
 }
 
 interface ImportMeta {
